@@ -1,0 +1,19 @@
+{
+  "name": "aardwolf-client",
+  "version": "0.0.1",
+  "description": "Aardwolf MUD Client",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "author": "Max Wang",
+  "license": "ISC",
+  "dependencies": {
+    "blessed": "^0.1.81",
+    "neo-blessed": "^0.2.0",
+    "telnet": "0.0.1",
+    "telnet-stream": "^1.0.4",
+    "telnet2": "0.0.1"
+  }
+}
