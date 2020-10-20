@@ -32,10 +32,15 @@ const tsock = new TelnetSocket(socket);
 const history = [];
 let historyInd = 0;
 let loggedIn = false;
+let dailyBlessingActive = false;
 
 input.on('submit', (msg) => {
   if (msg && loggedIn) {
     historyInd = history.push(msg);
+  }
+  if (dailyBlessingActive && msg.toLowerCase() === 'daily blessing') {
+    dailyBlessingActive = false;
+    blessing.setContent('');
   }
   input.clearValue();
   input.focus();
@@ -81,7 +86,7 @@ function ingest(message) {
     const hasMap = RegExp(/[a-zA-Z0-9]+/g);
     // "[*Daily Blessing*] [678/678hp 666/666mn 993/993mv 0qt 746tnl] >"
     // "[Fighting: 587/717hp 700/700mn 1025/1025mv 695tnl Enemy: 45% ]>"
-    const playerStats = RegExp(/(?<prefix>[\[A-Za-z: ]*)(?<hp>[0-9]+)\/(?<totalhp>[0-9]+)hp (?<mn>[0-9]+)\/(?<totalmn>[0-9]+)mn (?<mv>[0-9]+)\/(?<totalmv>[0-9]+)mv (?<qt>[0-9]+)qt? (?<tnl>[0-9]+)tnl/g);
+    const playerStats = RegExp(/(?<prefix>[\[A-Za-z: ]*)(?<hp>[0-9]+)\/(?<totalhp>[0-9]+)hp (?<mn>[0-9]+)\/(?<totalmn>[0-9]+)mn (?<mv>[0-9]+)\/(?<totalmv>[0-9]+)mv((?<qt> [0-9]+)qt)? (?<tnl>[0-9]+)tnl/g);
     const enemyStats = RegExp(/ Enemy: (?<enemy>[0-9]+)%/g);
     const dailyBlessing = RegExp(/\[.*\*.*Daily Blessing.*\*.*]/);
 
@@ -90,8 +95,7 @@ function ingest(message) {
     const haveBlessing = dailyBlessing.test(line);
     if (haveBlessing) {
       blessing.setContent('Ayla wants to bless you.');
-    } else {
-      blessing.setContent('');
+      dailyBlessingActive = true;
     }
     if (stats.length) {
       const { hp, totalhp, mn, totalmn, mv, totalmv, qt, tnl } = stats[0].groups;
@@ -102,7 +106,9 @@ function ingest(message) {
       mana_label.setContent(`MN ${mn}/${totalmn}`);
       moves_label.setContent(`MV ${mv}/${totalmv}`);
       next_level.setContent(`${tnl} experience points until you level up!`);
-      quest_time.setContent(qt !== '0' ? `${qt} minutes until next quest` : 'Go quest!');
+      if (qt) {
+        quest_time.setContent(qt.trim() !== '0' ? `${qt} minutes until next quest` : 'Go quest!');
+      }
       badguy.setProgress(0);
       badguy_label.setContent('');
     } else {
