@@ -10,7 +10,7 @@ const {
   moves, moves_label,
   badguy, badguy_label,
   next_level, quest_time,
-  blessing,
+  blessing, map,
 } = require('./components');
 
 if (!fs.existsSync('logs')) {
@@ -45,7 +45,7 @@ input.on('submit', (msg) => {
   input.clearValue();
   input.focus();
   tsock.write(msg + '\n');
-  if (input.secret) {
+  if (input.censor) {
     loggedIn = true;
   }
   screen.render();
@@ -76,20 +76,25 @@ input.key('C-c', () => {
 
 function ingest(message) {
   if (message.includes('Password: ')) {
-    input.secret = true;
+    input.censor = true;
   } else {
-    input.secret = false;
+    input.censor = false;
   }
   writeStream.write(String.raw`${message}`);
   const lines = message.split('\n');
+  const mapList = [];
   lines.forEach((line) => {
-    const hasMap = RegExp(/[a-zA-Z0-9]+/g);
+    const colorChars = RegExp(/\[\d;\d{2}m/g);
+    const noColorLine = line.replace(colorChars, '');
+    writeStream.write(noColorLine);
+    const hasMap = RegExp(/^[^a-zA-Z]+$/g);
     // "[*Daily Blessing*] [678/678hp 666/666mn 993/993mv 0qt 746tnl] >"
     // "[Fighting: 587/717hp 700/700mn 1025/1025mv 695tnl Enemy: 45% ]>"
     const playerStats = RegExp(/(?<prefix>[\[A-Za-z: ]*)(?<hp>[0-9]+)\/(?<totalhp>[0-9]+)hp (?<mn>[0-9]+)\/(?<totalmn>[0-9]+)mn (?<mv>[0-9]+)\/(?<totalmv>[0-9]+)mv((?<qt> [0-9]+)qt)? (?<tnl>[0-9]+)tnl/g);
     const enemyStats = RegExp(/ Enemy: (?<enemy>[0-9]+)%/g);
     const dailyBlessing = RegExp(/\[.*\*.*Daily Blessing.*\*.*]/);
 
+    const foundMap = hasMap.test(noColorLine);
     const stats = [...line.matchAll(playerStats)];
     const enStats = [...line.matchAll(enemyStats)];
     const haveBlessing = dailyBlessing.test(line);
@@ -111,6 +116,8 @@ function ingest(message) {
       }
       badguy.setProgress(0);
       badguy_label.setContent('');
+    } else if (loggedIn && foundMap) {
+      mapList.push(line);
     } else {
       output.log(line.replace(/\r/g, ''));
     }
@@ -120,6 +127,9 @@ function ingest(message) {
       badguy_label.setContent(`Baddie at ${enemy}%`);
     }
   });
+  if (mapList.length) {
+    map.setContent(mapList.join('\n'));
+  }
 }
 
 // exit the process when the telnet connection is closed

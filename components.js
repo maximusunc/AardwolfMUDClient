@@ -166,5 +166,5 @@ module.exports = {
   moves, moves_label,
   badguy, badguy_label,
   next_level, quest_time,
-  blessing,
+  blessing, map,
 };
