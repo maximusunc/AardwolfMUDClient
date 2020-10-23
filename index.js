@@ -127,7 +127,7 @@ function ingest(message) {
       badguy_label.setContent(`Baddie at ${enemy}%`);
     }
   });
-  if (mapList.length) {
+  if (mapList.length > 5) {
     map.setContent(mapList.join(''));
   }
 }
