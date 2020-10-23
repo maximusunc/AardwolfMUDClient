@@ -128,7 +128,7 @@ function ingest(message) {
     }
   });
   if (mapList.length) {
-    map.setContent(mapList.join('\n'));
+    map.setContent(mapList.join(''));
   }
 }
 
