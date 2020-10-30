@@ -11,11 +11,44 @@ const screen = blessed.screen({
   title: 'Aardwolf!',
 });
 
+const output = blessed.log({
+  parent: screen,
+  width: 82,
+  height: '100%-3',
+  left: 0,
+  top: 0,
+  border: 'line',
+  mouse: true,
+  scrollable: true,
+  alwaysScroll: true,
+  scrollback: 1000,
+  scrollbar: {
+    style: {
+      bg: 'yellow',
+    },
+  },
+  content: '',
+});
+const input = blessed.textbox({
+  parent: screen,
+  cursor: 'block',
+  cursorBlink: true,
+  width: 82,
+  height: 3,
+  left: 0,
+  bottom: 0,
+  border: 'line',
+  focused: true,
+  inputOnFocus: true,
+  scrollable: false,
+  mouse: false,
+});
+
 const map = blessed.box({
   parent: screen,
-  width: '25%',
-  height: '50%',
-  left: '35%',
+  width: 30,
+  height: 18,
+  left: 82,
   top: 0,
   border: 'line',
   focusable: false,
@@ -24,29 +57,29 @@ const map = blessed.box({
 
 const filler = blessed.box({
   parent: screen,
-  width: '65%',
-  height: '27%',
-  left: '35%',
-  bottom: 17,
+  width: '100%-82',
+  top: 18,
+  left: 82,
+  bottom: 16,
   border: 'line',
   focusable: false,
   mouse: false,
 });
 const filler_2 = blessed.box({
   parent: screen,
-  width: '40%',
-  height: '50%',
-  left: '60%',
+  width: '100%-112',
+  height: 18,
+  left: 112,
   border: 'line',
   focusable: false,
   mouse: false,
-})
+});
 
 const stats_box = blessed.box({
   parent: screen,
-  width: '65%',
-  height: '25%',
-  left: '35%',
+  width: '100%-82',
+  height: 16,
+  left: 82,
   bottom: 0,
   border: 'line',
   focusable: false,
@@ -124,39 +157,6 @@ const quest_time = blessed.text({
   top: 2,
   left: 0,
   content: '',
-});
-
-const output = blessed.log({
-  parent: screen,
-  width: '35%',
-  height: '100%-3',
-  left: 0,
-  top: 0,
-  border: 'line',
-  mouse: true,
-  scrollable: true,
-  alwaysScroll: true,
-  scrollback: 1000,
-  scrollbar: {
-    style: {
-      bg: 'yellow',
-    },
-  },
-  content: '',
-});
-const input = blessed.textbox({
-  parent: screen,
-  cursor: 'block',
-  cursorBlink: true,
-  width: '35%',
-  height: 3,
-  left: 0,
-  bottom: 0,
-  border: 'line',
-  focused: true,
-  inputOnFocus: true,
-  scrollable: false,
-  mouse: false,
 });
 
 module.exports = {
