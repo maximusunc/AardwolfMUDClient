@@ -46,7 +46,7 @@ const input = blessed.textbox({
 
 const map = blessed.box({
   parent: screen,
-  width: 30,
+  width: 32,
   height: 18,
   left: 82,
   top: 0,
@@ -67,7 +67,7 @@ const filler = blessed.box({
 });
 const filler_2 = blessed.box({
   parent: screen,
-  width: '100%-112',
+  width: '100%-114',
   height: 18,
   left: 112,
   border: 'line',

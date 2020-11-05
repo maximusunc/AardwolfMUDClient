@@ -71,7 +71,6 @@ input.key('down', () => {
 });
 input.key('C-c', () => {
   tsock.write('quit\n');
-  process.exit();
 });
 
 function ingest(message) {
@@ -81,12 +80,11 @@ function ingest(message) {
     input.censor = false;
   }
   writeStream.write(String.raw`${message}`);
-  const lines = message.split('\n');
+  const lines = message.split('\n\r');
   const mapList = [];
   lines.forEach((line) => {
     const colorChars = RegExp(/\[\d;\d{2}m/g);
     const noColorLine = line.replace(colorChars, '');
-    writeStream.write(noColorLine);
     const hasMap = RegExp(/^[^a-zA-CE-WY-Z]+[!@#$%^&*(),.?":{}|<>` -]+$/g);
     // "[*Daily Blessing*] [678/678hp 666/666mn 993/993mv 0qt 746tnl] >"
     // "[Fighting: 587/717hp 700/700mn 1025/1025mv 695tnl Enemy: 45% ]>"
@@ -127,11 +125,8 @@ function ingest(message) {
       badguy_label.setContent(`Baddie at ${enemy}%`);
     }
   });
-  if (mapList.length > 2 && mapList.length < 20) {
-    map.setContent(mapList.join(''));
-  }
-  if (mapList.length > 20) {
-    output.log(lines.join(''));
+  if (mapList.length > 2) {
+    map.setContent(mapList.join('\r'));
   }
 }
 
@@ -146,7 +141,6 @@ tsock.on('data', (chunk) => {
   const msg = chunk.toString('utf8');
   // display the message from telnet
   ingest(msg);
-  // console.log(out.replace(/\r/g, '**newline**'));
 });
 
 input.readInput(() => {});
