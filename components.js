@@ -65,7 +65,7 @@ const filler = blessed.box({
   focusable: false,
   mouse: false,
 });
-const filler_2 = blessed.box({
+const group_stats = blessed.box({
   parent: screen,
   width: '100%-114',
   height: 18,
@@ -167,4 +167,5 @@ module.exports = {
   badguy, badguy_label,
   next_level, quest_time,
   blessing, map,
+  group_stats,
 };
