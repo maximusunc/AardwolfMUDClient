@@ -34,6 +34,7 @@ const history = [];
 let historyInd = 0;
 let loggedIn = false;
 let dailyBlessingActive = false;
+let groupInterval = null;
 
 input.on('submit', (msg) => {
   if (msg && loggedIn) {
@@ -43,14 +44,20 @@ input.on('submit', (msg) => {
     dailyBlessingActive = false;
     blessing.setContent('');
   }
+  if (msg.toLowerCase().includes('group accept') || msg.toLowerCase().includes('group create')) {
+    groupInterval = setInterval(() => {
+      tsock.write('group\n');
+    }, 1000 * 10);
+  }
+  if (msg.toLowerCase().includes('group leave')) {
+    clearInterval(groupInterval);
+    group_stats.setContent('');
+  }
   input.clearValue();
   input.focus();
   tsock.write(msg + '\n');
   if (input.censor) {
     loggedIn = true;
-    setInterval(() => {
-      tsock.write('group\n');
-    }, 1000 * 10);
   }
   screen.render();
 });

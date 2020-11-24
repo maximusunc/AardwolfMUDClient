@@ -69,7 +69,7 @@ const group_stats = blessed.box({
   parent: screen,
   width: '100%-114',
   height: 18,
-  left: 112,
+  left: 114,
   border: 'line',
   focusable: false,
   mouse: false,
