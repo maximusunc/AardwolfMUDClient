@@ -57,13 +57,24 @@ const map = blessed.box({
 
 const filler = blessed.box({
   parent: screen,
-  width: '100%-82',
+  width: 40,
   top: 18,
   left: 82,
   bottom: 16,
   border: 'line',
   focusable: false,
   mouse: false,
+});
+const inventory = blessed.box({
+  parent: screen,
+  width: '100%-122',
+  top: 18,
+  bottom: 16,
+  left: 122,
+  border: 'line',
+  focusable: false,
+  mouse: true,
+  scrollable: true,
 });
 const group_stats = blessed.box({
   parent: screen,
@@ -101,13 +112,6 @@ const label_settings = {
   align: 'center',
   content: '',
 };
-
-const blessing = blessed.text({
-  parent: filler,
-  top: 0,
-  left: 0,
-  content: '',
-});
 
 const health = blessed.progressbar({
   bottom: 9,
@@ -158,6 +162,12 @@ const quest_time = blessed.text({
   left: 0,
   content: '',
 });
+const blessing = blessed.text({
+  parent: stats_box,
+  top: 0,
+  left: 70,
+  content: '',
+});
 
 module.exports = {
   screen, input, output,
@@ -167,5 +177,5 @@ module.exports = {
   badguy, badguy_label,
   next_level, quest_time,
   blessing, map,
-  group_stats,
+  group_stats, inventory,
 };
