@@ -46,6 +46,8 @@ let gettingMap = false;
 let mapContents = '';
 let gettingInv = false;
 let inv = '';
+// old group logic
+let groupInterval = null;
 
 input.on('submit', (msg) => {
   if (msg && loggedIn) {
@@ -55,6 +57,17 @@ input.on('submit', (msg) => {
     dailyBlessingActive = false;
     blessing.setContent('');
   }
+  // old group logic
+  if (msg.toLowerCase().includes('group accept') || msg.toLowerCase().includes('group create')) {
+    groupInterval = setInterval(() => {
+      tsock.write('group\n');
+    }, 1000 * 10);
+  }
+  if (msg.toLowerCase().includes('group leave')) {
+    clearInterval(groupInterval);
+    group_stats.setContent('');
+  }
+
   input.clearValue();
   input.focus();
   tsock.write(msg + '\n');
@@ -94,6 +107,14 @@ function ingest(message) {
   }
   // All messages seem to have an extra return
   message = message.replace(/\r/g, '');
+  writeStream.write(String.raw`${message}`);
+
+  let groupStats = message.match(/(-+.*\[.*Group:.*\].*-+)(.*)(\d{1,}\/\d{1,} +\d{1,}. +\d{1,}.*\d{1,}.*  Y?)/s);
+  if (groupStats) {
+    groupStats = groupStats[0];
+    group_stats.setContent(groupStats);
+    message = message.replace(groupStats, '');
+  }
 
   // Grab map. If it exists, put it in the map box
   const mapStart = message.match(/(?<=<MAPSTART>)(.*)/s);
@@ -107,7 +128,8 @@ function ingest(message) {
       gettingMap = false;
     }
     // remove from output log
-    message = message.replace(/(<MAPSTART>)?(.*)(<MAPEND>)?/s, '');
+    // This will only replace maps that are in the same message
+    message = message.replace(/<MAPSTART>(.*)<MAPEND>/s, '');
   }
 
   // Grab inventory. It will likely come as multiple messages, so we need to keep track
@@ -179,7 +201,7 @@ tsock.on('close', () => {
 
 // listen to all incoming messages
 tsock.on('data', (chunk) => {
-  tsock.writeSub(GMCP, 'core.request "room"');
+  tsock.writeSub(GMCP, 'request group\n');
   const msg = chunk.toString('utf8');
   // display the message from telnet
   ingest(msg);
@@ -189,15 +211,15 @@ tsock.on('will', (opt) => {
   if (opt === GMCP) {
     // enable that junk
     tsock.writeDo(GMCP);
-    // tsock.writeSub(GMCP, 'core.request "room"');
-    // tsock.writeSub(GMCP, 'core.supports.set [ "char 1", "comm 1", "room 1", "group 1" ]');
+    tsock.writeSub(GMCP, 'group on\n');
+    tsock.writeSub(GMCP, 'Core.Supports.Set [ "char 1", "comm 1", "room 1", "group 1" ]\n');
   }
 });
 
 tsock.on('sub', (opt, buf) => {
+  const msg = buf.toString('utf8');
+  output.log(msg);
   if (opt === GMCP) {
-    const msg = buf.toString('utf8');
-    output.log(msg);
     // writeStream.write(String.raw`${msg}`);
     // writeStream.write(String.raw`------end of message------`);
   }
