@@ -1,7 +1,5 @@
 node_modules/
 .DS_Store
-*.py
-.python-version
-*log
-aliases
-command_list
+python_client
+logs
+build

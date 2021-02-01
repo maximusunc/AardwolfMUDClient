@@ -5,6 +5,10 @@
 npm install
 npm start
 ```
+If you want the old terminal client, run:
+```bash
+npm run start-old
+```
 
 ## Inside the game
 Regex can be a pain, so Aardwolf put in some helpful tags you can enable.
