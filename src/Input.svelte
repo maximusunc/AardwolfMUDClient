@@ -1,6 +1,7 @@
 <script>
     const { ipcRenderer } = require('electron');
     import { onMount } from 'svelte';
+    import { output } from './output';
     let command = '';
     let input = null;
     let commandHistory = new Set();
@@ -37,6 +38,13 @@
                 // clear input if at the end
                 command = '';
             }
+        }
+        if (command.toLowerCase() === 'daily blessing') {
+            output.update(output => {
+                output.stats.blessing = false;
+                console.log(output);
+                return output;
+            });
         }
     }
     // focus on input when initialized
