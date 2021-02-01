@@ -30,7 +30,7 @@ let writeStream;
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 
-let developmentMode = true;
+let developmentMode = false;
 
 function createWindow() {
   const openWindow = () => {
