@@ -14,7 +14,14 @@
 
     function getInventory(lastLog) {
         if (!lastLog) return;
-        if (lastLog.indexOf("You drop ") > -1 || lastLog.indexOf("You get ") > -1) {
+        if (
+            lastLog.indexOf("You drop ") > -1 ||
+            lastLog.indexOf("You get ") > -1 ||
+            lastLog.indexOf("You put ") > -1 ||
+            lastLog.indexOf("You take ") > -1 ||
+            lastLog.indexOf("You remove ") > -1 ||
+            lastLog.indexOf("You take ") > -1
+        ) {
             ipcRenderer.send('msg', 'inv\n');
         }
     }
