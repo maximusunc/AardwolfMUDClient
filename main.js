@@ -31,6 +31,11 @@ let writeStream;
 let mainWindow;
 
 let developmentMode = false;
+if (process.argv[2] === '-d') {
+  developmentMode = true;
+}
+
+const GMCP = 201;
 
 function createWindow() {
   const openWindow = () => {
@@ -77,7 +82,6 @@ function createWindow() {
 
       // listen to all incoming messages
       tsock.on('data', (chunk) => {
-        // tsock.writeSub(GMCP, 'request group\n');
         const msg = chunk.toString('utf8');
         // message always has extra returns
         const message = msg.replaceAll('\r', '');
@@ -85,11 +89,27 @@ function createWindow() {
         // send the message from telnet to UI
         mainWindow.webContents.send('message', message);
       });
+      tsock.on('will', (opt) => {
+        if (opt === GMCP) {
+          // enable that junk
+          tsock.writeDo(GMCP);
+          tsock.writeSub(GMCP, Buffer.from('Core.Hello { "client": "MaxMUD", "version": "1.0.0" }', 'utf-8'));
+          tsock.writeSub(GMCP, Buffer.from('Core.Supports.Set [ "Char 1", "Comm 1", "Room 1", "Group 1" ]', 'utf-8'));
+        }
+      });
+
+      tsock.on('sub', (opt, buf) => {
+        // receive all gmcp subnegotiations and send them to the UI
+        if (opt === GMCP) {
+          const msg = buf.toString('utf8');
+          mainWindow.webContents.send('gmcp', msg);
+        }
+      });
+
       // exit the process when the telnet connection is closed
       tsock.on('close', () => {
         writeStream.end();
-        // return process.exit();
-        mainWindow.webContents.send('closed');
+        mainWindow.close();
       });
     });
 

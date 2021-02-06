@@ -19,6 +19,10 @@
   ipcRenderer.on('closed', () => {
     console.log('telnet client closed, quit or sign back in.');
   });
+
+  ipcRenderer.on('gmcp', (e, msg) => {
+    console.log('gmcp:', msg);
+  });
 </script>
 
 <style>

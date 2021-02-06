@@ -5,9 +5,10 @@
   "main": "index.js",
   "scripts": {
     "svelte-build": "rollup -c -w",
-    "start-electron": "electron main.js",
+    "start-electron": "electron main.js -d",
     "svelte-serve": "sirv public",
-    "start": "run-p svelte-build start-electron",
+    "start-dev": "run-p svelte-build start-electron",
+    "start": "rollup -c && electron main.js",
     "start-old": "node index.js"
   },
   "author": "Max Wang",
