@@ -7,6 +7,7 @@ const { subscribe, set, update } = writable({
   map: '',
   inventory: '',
   stats: {},
+  blessing: false,
   group: '',
 });
 
@@ -70,7 +71,7 @@ function extractInventory(self, msg) {
 }
 
 function parseMessage(self, msg) {
-  msg = extractGroup(self, msg);
+  // msg = extractGroup(self, msg);
   msg = extractMap(self, msg);
   msg = extractInventory(self, msg);
 
@@ -86,7 +87,7 @@ function parseMessage(self, msg) {
   const enStats = [...msg.matchAll(enemyStats)];
   const haveBlessing = dailyBlessing.test(msg);
   if (haveBlessing) {
-    stats.blessing = true;
+    self.blessing = true;
     msg = msg.replace(dailyBlessing, '');
   }
   if (pStats.length) {
@@ -102,7 +103,7 @@ function parseMessage(self, msg) {
       stats.qt = parseInt(qt, 10);
     }
     stats.enemy = 0;
-    msg = msg.replace(playerStats, '');
+    // msg = msg.replace(playerStats, '');
   }
   if (enStats.length) {
     const { enemy } = enStats[0].groups;

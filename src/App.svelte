@@ -7,6 +7,7 @@
   import Inventory from './Inventory.svelte';
   import Stats from './Stats.svelte';
   import { output } from './output';
+  import { gmcp } from './gmcp';
   const { ipcRenderer } = require('electron');
 
   // Tell main.js that UI is running and ready to start telnet communications
@@ -16,12 +17,9 @@
   ipcRenderer.on('message', (e, msg) => {
     output.ingest(msg);
   });
-  ipcRenderer.on('closed', () => {
-    console.log('telnet client closed, quit or sign back in.');
-  });
 
   ipcRenderer.on('gmcp', (e, msg) => {
-    console.log('gmcp:', msg);
+    gmcp.ingest(msg);
   });
 </script>
 

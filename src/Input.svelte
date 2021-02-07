@@ -6,12 +6,12 @@
     let input = null;
     let commandHistory = new Set();
     let historyIndex = 0;
-    let groupInterval = null;
-    
+
     const handleKeyPress = () => {
 		if (event.code == 'Enter') {
             // send command to telnet
             ipcRenderer.send('msg', command);
+
             // keep unique ordered list of previous commands
             if (commandHistory.has(command)) {
                 // basically move last command to end of set
@@ -24,22 +24,11 @@
             // scroll output to bottom
             const element = document.getElementById('log');
             element.scrollTop = element.scrollHeight - element.clientHeight;
+
+            // keep track of daily blessing
             if (command.toLowerCase() === 'daily blessing') {
-                output.update(output => {
-                    output.stats.blessing = false;
-                    return output;
-                });
-            }
-            // old group logic
-            if (command.toLowerCase().includes('group accept') || command.toLowerCase().includes('group create')) {
-                groupInterval = setInterval(() => {
-                    ipcRenderer.send('msg', 'group');
-                }, 1000 * 10);
-            }
-            if (command.toLowerCase().includes('group leave')) {
-                clearInterval(groupInterval);
-                output.update(output => {
-                    output.group = {};
+                output.update(self => {
+                    self.blessing = false;
                     return output;
                 });
             }

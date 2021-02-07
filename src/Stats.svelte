@@ -1,5 +1,5 @@
 <script>
-  import { output } from "./output";
+  import { gmcp } from './gmcp';
 </script>
 
 <style>
@@ -59,23 +59,23 @@
 </style>
 
 <div id="statsContainer">
-  {#if $output.stats.totalHealth}
+  {#if $gmcp.vitals.hp}
     <div class="meter">
-      <span class="health" style={`width: ${$output.stats.currentHealth / $output.stats.totalHealth * 100}%`}></span>
-      <div>Health {$output.stats.currentHealth}/{$output.stats.totalHealth}</div>
+      <span class="health" style={`width: ${$gmcp.vitals.hp / $gmcp.vitals.maxhp * 100}%`}></span>
+      <div>Health {$gmcp.vitals.hp}/{$gmcp.vitals.maxhp}</div>
     </div>
     <div class="meter">
-      <span class="mana" style={`width: ${$output.stats.currentMana / $output.stats.totalMana * 100}%`}></span>
-      <div>Mana {$output.stats.currentMana}/{$output.stats.totalMana}</div>
+      <span class="mana" style={`width: ${$gmcp.vitals.mana / $gmcp.vitals.maxmn * 100}%`}></span>
+      <div>Mana {$gmcp.vitals.mana}/{$gmcp.vitals.maxmn}</div>
     </div>
     <div class="meter">
-      <span class="moves" style={`width: ${$output.stats.currentMoves / $output.stats.totalMoves * 100}%`}></span>
-      <div>Moves {$output.stats.currentMoves}/{$output.stats.totalMoves}</div>
+      <span class="moves" style={`width: ${$gmcp.vitals.moves / $gmcp.vitals.maxmv * 100}%`}></span>
+      <div>Moves {$gmcp.vitals.moves}/{$gmcp.vitals.maxmv}</div>
     </div>
     <div class="meter">
-      {#if $output.stats.enemy}
-        <span class="enemy" style={`width: ${$output.stats.enemy}%`}></span>
-        <div>Enemy {`${$output.stats.enemy}%`}</div>
+      {#if $gmcp.enemy.name}
+        <span class="enemy" style={`width: ${$gmcp.enemy.health}%`}></span>
+        <div>{$gmcp.enemy.name} {`${$gmcp.enemy.health}%`}</div>
       {/if}
     </div>
   {/if}
