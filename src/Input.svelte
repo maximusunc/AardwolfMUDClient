@@ -66,6 +66,5 @@
     bind:value={command}
     bind:this={input}
     on:keyup|preventDefault={handleKeyPress}
-    on:blur={() => input.focus()} 
     placeholder="Telnet command..."
 >
