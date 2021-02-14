@@ -6,3 +6,33 @@ body {
     height: 100vh;
     margin: 0;
 }
+#inventory {
+    grid-column: 2 / span 3;
+    grid-row: 2;
+    height: 100%;
+    overflow-y: auto;
+    background-color: #fff;
+    color: #000;
+}
+#inventory .pure-menu {
+    background-color: #eee;
+    color: #444;
+}
+#inventory li.pure-menu-item {
+    background-color: #eee;
+    color: #777;
+    border-bottom: 1px solid #444;
+    border-right: 1px solid #eee;
+    border-left: 1px solid #eee;
+}
+#inventory li.mm_active {
+    background-color: #fff;
+    color: #444;
+    border-bottom-color: #fff;
+    border-right-color: #444;
+    border-left-color: #444;
+}
+#inventory li.mm_active a {
+    background-color: #fff;
+    color: #444;
+}
