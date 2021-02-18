@@ -7,6 +7,7 @@
     div {
         grid-column: 1;
         grid-row: 2;
+        padding: 0px 10px;
     }
 </style>
 
@@ -21,8 +22,5 @@
         <p>Hunger: {$gmcp.sustenance.hunger}</p>
         <p>Thirst: {$gmcp.sustenance.thirst}</p>
         <p>Align: {$gmcp.stats.align}</p>
-        {#if $output.blessing}
-            <p>Your daily blessing is ready to be received!</p>
-        {/if}
     {/if}
 </div>

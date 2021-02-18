@@ -10,11 +10,12 @@
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
+    padding: 0px 10px;
   }
   .meter {
     height: 14%; /* Can be anything */
     position: relative;
-    background: #555;
+    background: #616E7C;
     -moz-border-radius: 25px;
     -webkit-border-radius: 25px;
     border-radius: 25px;
