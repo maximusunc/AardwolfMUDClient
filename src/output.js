@@ -7,7 +7,6 @@ const { subscribe, set, update } = writable({
   map: '',
   inventory: '',
   stats: {},
-  blessing: false,
   group: '',
 });
 
@@ -15,17 +14,6 @@ let mapContents = '';
 let gettingMap = false;
 let gettingInv = false;
 let inv = '';
-
-function extractGroup(self, msg) {
-  let groupStats = msg.match(/(-+.*\[.*Group:.*\].*-+)(.*)(\d{1,}\/\d{1,} +?\d{1,}. +?\d{1,}.*?\d{1,}.*  Y?)/s);
-  if (!groupStats) {
-    return msg
-  }
-  groupStats = groupStats[0];
-  const group = ansiup.ansi_to_html(groupStats);
-  self.group = group;
-  return msg.replace(groupStats, '');
-}
 
 function extractMap(self, msg) {
   // Grab map. If it exists, put it in the map box
@@ -75,42 +63,12 @@ function parseMessage(self, msg) {
   msg = extractMap(self, msg);
   msg = extractInventory(self, msg);
 
-  const stats = {};
   // "[*Daily Blessing*] [678/678hp 666/666mn 993/993mv 0qt 746tnl] >"
   // const playerStats = RegExp(/(?<prefix>\[[A-Za-z: ]*)(?<hp>[0-9]+)\/(?<totalhp>[0-9]+)hp (?<mn>[0-9]+)\/(?<totalmn>[0-9]+)mn (?<mv>[0-9]+)\/(?<totalmv>[0-9]+)mv((?<qt> [0-9]+)qt)? (?<tnl>[0-9]+)tnl.+?>/g);
   const playerStats = RegExp(/(?<prefix>\[[^\][A-Za-z: ].*?)(?<hp>[0-9]+)\/(?<totalhp>[0-9]+)hp (?<mn>[0-9]+)\/(?<totalmn>[0-9]+)mn (?<mv>[0-9]+)\/(?<totalmv>[0-9]+)mv((?<qt> [0-9]+)qt)? (?<tnl>[0-9]+)tnl.+?>/g);
   // "[Fighting: 587/717hp 700/700mn 1025/1025mv 695tnl Enemy: 45% ]>"
-  const enemyStats = RegExp(/ Enemy: (?<enemy>[0-9]+)%/g);
-  const dailyBlessing = RegExp(/\[.*\*.*Daily Blessing.*\*.*]/);
 
   const pStats = [...msg.matchAll(playerStats)];
-  const enStats = [...msg.matchAll(enemyStats)];
-  const haveBlessing = dailyBlessing.test(msg);
-  if (haveBlessing) {
-    self.blessing = true;
-    msg = msg.replace(dailyBlessing, '');
-  }
-  if (pStats.length) {
-    const { hp, totalhp, mn, totalmn, mv, totalmv, qt, tnl } = pStats[0].groups;
-    stats.currentHealth = hp;
-    stats.totalHealth = totalhp;
-    stats.currentMana = mn;
-    stats.totalMana = totalmn;
-    stats.currentMoves = mv;
-    stats.totalMoves = totalmv;
-    stats.tnl = tnl;
-    if (qt) {
-      stats.qt = parseInt(qt, 10);
-    }
-    stats.enemy = 0;
-    // msg = msg.replace(playerStats, '');
-  }
-  if (enStats.length) {
-    const { enemy } = enStats[0].groups;
-    stats.enemy = enemy;
-    msg = msg.replace(enemyStats, '');
-  }
-  self.stats = { ...self.stats, ...stats };
   return msg;
 }
 
