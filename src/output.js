@@ -6,8 +6,7 @@ const { subscribe, set, update } = writable({
   log: [],
   map: '',
   inventory: '',
-  stats: {},
-  group: '',
+  qt: null,
 });
 
 let mapContents = '';
@@ -69,6 +68,12 @@ function parseMessage(self, msg) {
   // "[Fighting: 587/717hp 700/700mn 1025/1025mv 695tnl Enemy: 45% ]>"
 
   const pStats = [...msg.matchAll(playerStats)];
+  if (pStats.length) {
+    const { qt } = pStats[0].groups;
+    if (qt) {
+      self.qt = parseInt(qt, 10);
+    }
+  }
   return msg;
 }
 

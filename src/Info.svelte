@@ -14,8 +14,8 @@
 <div>
     {#if $gmcp.stats.tnl}
         <p>Experience to next level: {$gmcp.stats.tnl}</p>
-        {#if $output.stats.qt}
-            <p>Time until next quest: {$output.stats.qt}</p>
+        {#if $output.qt}
+            <p>Time until next quest: {$output.qt}</p>
         {:else}
             <p>Go quest!</p>
         {/if}
