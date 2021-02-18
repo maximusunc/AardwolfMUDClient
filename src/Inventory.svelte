@@ -23,18 +23,16 @@
     }
 </script>
 
-<link rel="stylesheet" href="https://unpkg.com/purecss@2.0.5/build/pure-min.css" integrity="sha384-LTIDeidl25h2dPxrB2Ekgc9c7sEC3CWGM6HeFmuDNUjX76Ert4Z4IY714dhZHPLd" crossorigin="anonymous">
-
 <div id="inventory">
-    <div class="pure-menu pure-menu-horizontal">
-        <ul class="pure-menu-list">
+    <div>
+        <ul>
             {#each [...Object.keys($output.containers)].reverse() as containerid}
-                <li class="pure-menu-item tab" id="{containerid}_tab" >
-                    <a class="pure-menu-link" on:click={() => {openTab(containerid)}}>{@html containerid.match(/[a-z]/i) ? containerid : strip_colors($output.items.get(containerid).itemname)}</a>
+                <li class="tab" id="{containerid}_tab" >
+                    <a on:click={() => {openTab(containerid)}}>{@html containerid.match(/[a-z]/i) ? containerid : strip_colors($output.items.get(containerid).itemname)}</a>
                 </li>
             {/each}
-            <!-- <li class="pure-menu-item">
-                <a class="pure-menu-link tab" id="refresh_tab" on:click={handleRefresh}>refresh</a>
+            <!-- <li>
+                <a class="tab" id="refresh_tab" on:click={handleRefresh}>refresh</a>
             </li> -->
         </ul>
     </div>

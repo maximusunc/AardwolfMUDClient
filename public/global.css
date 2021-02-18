@@ -14,17 +14,6 @@ body {
     background-color: #fff;
     color: #000;
 }
-#inventory .pure-menu {
-    background-color: #eee;
-    color: #444;
-}
-#inventory li.pure-menu-item {
-    background-color: #eee;
-    color: #777;
-    border-bottom: 1px solid #444;
-    border-right: 1px solid #eee;
-    border-left: 1px solid #eee;
-}
 #inventory li.mm_active {
     background-color: #fff;
     color: #444;
