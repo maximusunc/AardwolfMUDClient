@@ -93,15 +93,15 @@ class Captor {
     let precontent = "";
     let content = "";
     let postcontent = "";
-    var containerid = "";
-    var handler;
+    let containerid = "";
+    let handler;
 
     if (this.current) {
       // console.log(`continuing to capture ${this.current}`);
       handler = this.handlers[this.current];
       content = msg;
     } else {
-      var key;
+      let key;
       for ([key, handler] of Object.entries(this.handlers)) {
         // console.log(`checking for "${handler.openTag}"`);
         if (msg.match(handler.openTag)) {
@@ -145,7 +145,7 @@ class Captor {
   }
 
   askForContainer(containerid) {
-    var msg;
+    let msg;
     switch (containerid) {
       case "inventory":
         msg = "invdata";
