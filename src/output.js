@@ -3,11 +3,23 @@ const AU = require('ansi_up');
 const ansiup = new AU.default;
 const { ipcRenderer } = require('electron');
 
+/**
+ * Strip ANSI and Aardwolf-style color tags from a string.
+ * @param {string} str - string to be modified
+ */
 function strip_colors(str) {
   return str.replace(/@./g, "").replace(/\u001B\[\d;\d\dm/g, "")
 }
 
+/**
+ * Extension of built-in Map to provide a default value.
+ */
 class DefaultMap extends Map {
+  /**
+   * Create a DefaultMap
+   * @param {*} getDefaultValue - function generating the default value
+   * @param  {...any} mapConstructorArgs - standard Map constructor arguments
+   */
   constructor(getDefaultValue, ...mapConstructorArgs) {
     super(mapConstructorArgs);
 
@@ -18,6 +30,10 @@ class DefaultMap extends Map {
     this.getDefaultValue = getDefaultValue;
   }
 
+  /**
+   * Get the value associated with a key, or the default value.
+   * @param {} key
+   */
   get(key) {
     if (!this.has(key)) {
       this.set(key, this.getDefaultValue(key));
@@ -27,7 +43,12 @@ class DefaultMap extends Map {
   };
 };
 
+/** Class representing a specific item. */
 class Item {
+  /**
+   * Create an item.
+   * @param {string} invitem - the contents of an invitem report
+   */
   constructor(invitem) {
     if (!invitem) {
       this.flags = "";
@@ -57,6 +78,12 @@ class Item {
   }
 }
 
+/**
+ * Add a collection of items to a container.
+ * @param {*} self - the svelte state object
+ * @param {string} invdata - the contents of an invdata report
+ * @param {string} containerid - the container to which to add the items
+ */
 function addItems(self, invdata = "", containerid = "inventory") {
   if (!invdata) {
     return
@@ -80,7 +107,11 @@ const { subscribe, set, update } = writable({
   containers: {},
 });
 
+/** Class for capturing tag-delimited reports. */
 class Captor {
+  /**
+   * Create a captor.
+   */
   constructor() {
     this.current = "";
     this.buffer = "";
@@ -88,6 +119,11 @@ class Captor {
     this.handlers = {};
   }
 
+  /**
+   * Extract tag-delimited reports from a telnet message.
+   * @param {*} self - the svelte state object
+   * @param {string} msg - a telnet message
+   */
   extractBetweenTags(self, msg) {
     // if the message has opening tag
     let precontent = "";
@@ -144,6 +180,10 @@ class Captor {
     return precontent + postcontent;
   }
 
+  /**
+   * Send a telnet message requesting invdata/eqdata
+   * @param {string} containerid - the id of a container to be requested
+   */
   askForContainer(containerid) {
     let msg;
     switch (containerid) {
@@ -164,6 +204,13 @@ class Captor {
   }
 }
 
+/**
+ * Move an object from one container to another.
+ * @param {*} self - the svelte state object
+ * @param {string} objectid - an object id
+ * @param {string} from - the id of a container from which to move the object
+ * @param {string} to - the id of a container to which to move the object
+ */
 function moveItem(self, objectid, from, to) {
   // removeItem(self, objectid, from);
   if (from in self.containers) {
@@ -180,6 +227,12 @@ function moveItem(self, objectid, from, to) {
   }
 }
 
+/**
+ * Remove an object from a container.
+ * @param {*} self - the svelte state object
+ * @param {*} objectid - an object id
+ * @param {*} from - the id of a container from which to remove the object
+ */
 function removeItem(self, objectid, from) {
   if (from in self.containers) {
     self.containers[from].delete(objectid);
@@ -188,6 +241,12 @@ function removeItem(self, objectid, from) {
   }
 }
 
+/**
+ * Add an object to a container.
+ * @param {*} self - the svelte state object
+ * @param {*} objectid - an object id
+ * @param {*} to - the id of a container to which to add the object
+ */
 function addItem(self, objectid, to) {
   if (to in self.containers) {
     self.containers[to].add(objectid);
@@ -245,6 +304,11 @@ let invactions = {
   },
 }
 
+/**
+ * Extract and handle any invmon reports.
+ * @param {*} self - the svelte state object
+ * @param {string} msg - a telnet message
+ */
 function extractInvmon(self, msg) {
   let invmon = msg.match(/(?<=\{invmon\}).*/gm);
   if (!invmon) {
@@ -257,6 +321,11 @@ function extractInvmon(self, msg) {
   return msg;
 }
 
+/**
+ * Extract and handle any invitem reports.
+ * @param {*} self - the svelte state object
+ * @param {string} msg - a telnet message
+ */
 function extractInvitem(self, msg) {
   let invitem = msg.match(/(?<=\{invitem\}).*/g);
   if (!invitem) {
@@ -294,6 +363,11 @@ captor.handlers["equipment"] = {
   },
 }
 
+/**
+ * Parse and handle a telnet message.
+ * @param {*} self - the svelte state object
+ * @param {*} msg - a telnet message
+ */
 function parseMessage(self, msg) {
   msg = captor.extractBetweenTags(self, msg);
   msg = extractInvmon(self, msg);
