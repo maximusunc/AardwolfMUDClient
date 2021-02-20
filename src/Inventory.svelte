@@ -25,7 +25,12 @@
     {#if openTab in $output.containers}
         <ul>
             {#each [...$output.containers[openTab]].reverse() as objectid}
-                <li>{@html $output.items.get(objectid).display()}</li>
+                <li>
+                    {@html $output.items.get(objectid).display()}
+                    {#each $output.items.get(objectid).actions() as action}
+                        <a on:click={() => {ipcRenderer.send('msg', `${action} ${objectid}`);}}>{@html action}</a>
+                    {/each}
+                </li>
             {/each}
         </ul>
     {/if}

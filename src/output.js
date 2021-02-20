@@ -43,6 +43,14 @@ class DefaultMap extends Map {
   };
 };
 
+const itemactions = {
+  5: ["wield"],
+  7: ["wear"],
+  8: ["drink"],
+  11: ["look in"],
+  14: ["eat"]
+}
+
 /** Class representing a specific item. */
 class Item {
   /**
@@ -75,6 +83,10 @@ class Item {
 
   display() {
     return `${strip_colors(this.itemname)} (${this.level})`
+  }
+
+  actions() {
+    return this.type in itemactions ? itemactions[this.type] : []
   }
 }
 
