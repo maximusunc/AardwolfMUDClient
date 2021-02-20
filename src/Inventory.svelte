@@ -40,7 +40,7 @@
                     {@html $output.items.get(objectid).display()}
                     {#if openTab === "inventory"}
                         {#each $output.items.get(objectid).invactions() as action}
-                            <a on:click={() => {ipcRenderer.send('msg', `${action} ${objectid}`);}}>{@html action}</a>
+                            <a on:click={() => {ipcRenderer.send('msg', `${action.command} ${objectid}`);}}>{@html action.label}</a>
                         {/each}
                     {:else if openTab === "equipment"}
                         <a on:click={() => {ipcRenderer.send('msg', `remove ${objectid}`);}}>remove</a>

@@ -44,30 +44,33 @@ class DefaultMap extends Map {
 };
 
 const generalActions = [
-  "drop"
+  {command: "drop", label: "drop"}
 ]
 
 const itemActions = {
-  1: ["hold"], // light
-  2: [], // scroll
-  3: ["hold"], // wand
-  4: ["hold"], // stave
-  5: ["wield"], // weapon
+  1: [{command: "hold", label: "hold"}], // light
+  2: [{command: "recite", label: "use (on self)"}], // scroll
+  3: [{command: "hold", label: "hold"}], // wand
+  4: [{command: "hold", label: "hold"}], // stave
+  5: [{command: "wield", label: "wield"}], // weapon
   6: [], // treasure
-  7: ["wear"], // armor
-  8: ["quaff"], // potion
+  7: [{command: "wear", label: "wear"}], // armor
+  8: [{command: "quaff", label: "quaff"}], // potion
   9: [], // furniture
   10: [], // trash
-  11: ["look in"], // container
-  12: ["drink"], // drink container
+  11: [ // container
+    {command: "look in", label: "look"},
+    {command: "invdata", label: "monitor"},
+  ],
+  12: [{command: "drink", label: "drink"}], // drink container
   13: [], // key
-  14: ["eat"], // food
+  14: [{command: "eat", label: "eat"}], // food
   15: [], // boat
   16: [], // mob corpse
   17: [], // player corpse
   18: [], // fountain
   19: [], // pill
-  20: ["hold"], // portal
+  20: [{command: "hold", label: "hold"}], // portal
   21: [], // beacon
   22: [], // gift card
   23: [], // unused
@@ -112,7 +115,8 @@ class Item {
   }
 
   invactions() {
-    return [...itemActions[this.type], ...generalActions]
+    let specificActions = this.type in itemActions ? itemActions[this.type] : []
+    return [...specificActions, ...generalActions]
   }
 }
 
