@@ -43,12 +43,38 @@ class DefaultMap extends Map {
   };
 };
 
-const itemactions = {
-  5: ["wield"],
-  7: ["wear"],
-  8: ["drink"],
-  11: ["look in"],
-  14: ["eat"]
+const generalActions = [
+  "drop"
+]
+
+const itemActions = {
+  1: ["hold"], // light
+  2: [], // scroll
+  3: ["hold"], // wand
+  4: ["hold"], // stave
+  5: ["wield"], // weapon
+  6: [], // treasure
+  7: ["wear"], // armor
+  8: ["quaff"], // potion
+  9: [], // furniture
+  10: [], // trash
+  11: ["look in"], // container
+  12: ["drink"], // drink container
+  13: [], // key
+  14: ["eat"], // food
+  15: [], // boat
+  16: [], // mob corpse
+  17: [], // player corpse
+  18: [], // fountain
+  19: [], // pill
+  20: ["hold"], // portal
+  21: [], // beacon
+  22: [], // gift card
+  23: [], // unused
+  24: [], // raw material
+  25: [], // campfire
+  26: [], // forge
+  27: [], // runestone
 }
 
 /** Class representing a specific item. */
@@ -85,8 +111,8 @@ class Item {
     return `${strip_colors(this.itemname)} (${this.level})`
   }
 
-  actions() {
-    return this.type in itemactions ? itemactions[this.type] : []
+  invactions() {
+    return [...itemActions[this.type], ...generalActions]
   }
 }
 
