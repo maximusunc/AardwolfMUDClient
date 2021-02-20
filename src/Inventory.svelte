@@ -9,6 +9,17 @@
     }
 </script>
 
+<style>
+    #inventory {
+        grid-column: 2 / span 3;
+        grid-row: 2;
+        height: 100%;
+        overflow-y: auto;
+        background-color: #fff;
+        color: #000;
+    }
+</style>
+
 <div id="inventory">
     <div>
         <ul>

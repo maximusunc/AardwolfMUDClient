@@ -6,22 +6,3 @@ body {
     height: 100vh;
     margin: 0;
 }
-#inventory {
-    grid-column: 2 / span 3;
-    grid-row: 2;
-    height: 100%;
-    overflow-y: auto;
-    background-color: #fff;
-    color: #000;
-}
-#inventory li.mm_active {
-    background-color: #fff;
-    color: #444;
-    border-bottom-color: #fff;
-    border-right-color: #444;
-    border-left-color: #444;
-}
-#inventory li.mm_active a {
-    background-color: #fff;
-    color: #444;
-}
