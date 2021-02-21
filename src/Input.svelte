@@ -2,7 +2,7 @@
     const { ipcRenderer } = require('electron');
     import { onMount } from 'svelte';
     import { output } from './output';
-    import { settings } from './settings';
+    import { settings, open } from './settings';
     let command = '';
     let input = null;
     let commandHistory = new Set();
@@ -10,9 +10,7 @@
 
     const handleKeyPress = () => {
 		if (event.code == 'Enter') {
-            // send command to telnet
-            ipcRenderer.send('msg', command);
-
+            // all user settings logic
             if (settings.gettingUsername) {
                 settings.saveUser({ username: command });
                 settings.gettingUsername = false;
@@ -21,6 +19,15 @@
                 settings.saveUser({ password: command });
                 settings.gettingPassword = false;
             }
+            if (command === 'settings') {
+                open.set(true);
+                command = '';
+                return;
+            }
+            // end user settings logic
+
+            // send command to telnet
+            ipcRenderer.send('msg', command);
 
             // keep unique ordered list of previous commands
             if (commandHistory.has(command)) {

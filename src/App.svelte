@@ -6,6 +6,7 @@
   import Info from './Info.svelte';
   import Inventory from './Inventory.svelte';
   import Stats from './Stats.svelte';
+  import Settings from './Settings.svelte';
   import { output } from './output';
   import { gmcp } from './gmcp';
   const { ipcRenderer } = require('electron');
@@ -54,4 +55,5 @@
     <Inventory />
     <Stats />
   </div>
+  <Settings />
 </div>

@@ -6,6 +6,13 @@ const { subscribe, set, update } = writable({
   groupActions: {},
 });
 
+function saveSettings(config) {
+  console.log(config);
+  ipcRenderer.send('config', config);
+}
+
+export const open = writable(false);
+
 export const settings = {
   subscribe,
   set,
@@ -18,23 +25,35 @@ export const settings = {
   }),
   gettingUsername: false,
   gettingPassword: false,
+  save: saveSettings,
   saveUser: msg => update(self => {
     if (self.user.autoLogin) return self;
     self.user = { ...self.user, ...msg };
     if (self.user.username && self.user.password) {
       const save = remote.dialog.showMessageBoxSync({
-        message: 'Do you want to save these credentials for future logins?',
+        message: 'Do you want to save these credentials for future logins? You can change this setting by submitting "settings".',
         buttons: ['Yes', 'No'],
       });
       console.log(save);
       if (save === 0) {
         self.user.autoLogin = true;
-        ipcRenderer.send('config', self);
+        saveSettings(self);
       } else {
         self.user.autoLogin = false;
-        ipcRenderer.send('config', self);
+        saveSettings(self);
       }
     }
+    return self;
+  }),
+  addGroupAction: groupMember => update(self => {
+    if (!self.groupActions[groupMember]) {
+      self.groupActions[groupMember] = [];
+    }
+    self.groupActions[groupMember].push({ label: '', command: '' });
+    return self;
+  }),
+  removeGroupAction: (groupMember, ind) => update(self => {
+    self.groupActions[groupMember].splice(ind, 1);
     return self;
   }),
 }

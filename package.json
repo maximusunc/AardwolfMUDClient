@@ -4,10 +4,10 @@
   "description": "Aardwolf MUD Client",
   "main": "index.js",
   "scripts": {
-    "svelte-build": "rollup -c -w",
+    "svelte-build": "rollup -c",
     "start-electron": "electron main.js -d",
     "svelte-serve": "sirv public",
-    "start-dev": "run-p svelte-build start-electron",
+    "dev": "npm run svelte-build && npm run start-electron",
     "start": "rollup -c && electron main.js",
     "start-old": "node index.js"
   },

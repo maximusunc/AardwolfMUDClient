@@ -1,5 +1,7 @@
 <script>
     import { gmcp } from './gmcp';
+    import { settings } from './settings';
+    const { ipcRenderer } = require('electron');
 </script>
 
 <style>
@@ -22,10 +24,13 @@
         margin: 0px;
     }
     .memberStats {
-        width: 80%;
+        width: 60%;
         display: flex;
         flex-direction: column;
         justify-content: space-evenly;
+    }
+    .memberActions {
+        width: 20%;
     }
     .here {
         color: green;
@@ -99,6 +104,13 @@
                         <span class="moves" style={`width: ${member.info.mv / member.info.mmv * 100}%`}></span>
                         <div>Moves {member.info.mv}/{member.info.mmv}</div>
                     </div>
+                </div>
+                <div class="memberActions">
+                    {#if $settings.groupActions[member.name]}
+                        {#each $settings.groupActions[member.name] as action, i}
+                            <button on:click={() => ipcRenderer.send('msg', action.command)}>{action.label}</button>
+                        {/each}
+                    {/if}
                 </div>
             </div>
         {/each}
