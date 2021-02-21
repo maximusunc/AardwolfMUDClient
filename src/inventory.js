@@ -205,7 +205,7 @@ let invactions = {
  * @param {string} msg - a telnet message
  */
 function extractInvmon(self, msg) {
-  let invmon = msg.match(/(?<=\{invmon\}).*/gm);
+  let invmon = msg.match(/(?<=\{invmon\}).*?$/gm);
   if (!invmon) {
     return msg;
   }
@@ -213,7 +213,7 @@ function extractInvmon(self, msg) {
     let [action, objectid, containerid, wear_loc] = line.split(",");
     invactions[action](self, objectid, containerid, wear_loc);
   });
-  return msg;
+  return msg.replace(/\{invmon\}.*?$/gm, "");
 }
 
 /**
@@ -222,7 +222,7 @@ function extractInvmon(self, msg) {
  * @param {string} msg - a telnet message
  */
 function extractInvitem(self, msg) {
-  let invitem = msg.match(/(?<=\{invitem\}).*/g);
+  let invitem = msg.match(/(?<=\{invitem\}).*?$/gm);
   if (!invitem) {
     return msg;
   }
@@ -232,7 +232,7 @@ function extractInvitem(self, msg) {
     self.items.set(objectid, new Item(properties));
     self.containers["inventory"].add(objectid);
   });
-  return msg;
+  return msg.replace(/\{invitem\}.*?$/gm, "");
 }
 
 /**
