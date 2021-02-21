@@ -1,6 +1,7 @@
 const electron = require('electron');
 const net = require('net');
 const fs = require('fs');
+const { userDataDir } = require('appdirs');
 // telnet-stream basically strips out all the telnet config messages.
 const { TelnetSocket } = require('telnet-stream');
 // Module to control application life.
@@ -38,6 +39,18 @@ if (process.argv[2] === '-d') {
 const GMCP = 201;
 
 function createWindow() {
+  let config = { user: {}, groupActions: {} };
+  // create a config file where user settings will be saved
+  const userDir = userDataDir('aardwolfMUD', false, null, true);
+  const configPath = path.join(userDir, 'config.json');
+  if (fs.existsSync(configPath)) {
+    const rawConfig = fs.readFileSync(configPath);
+    config = JSON.parse(rawConfig);
+  } else {
+    fs.mkdirSync(userDir, { recursive: true });
+    fs.writeFileSync(configPath, JSON.stringify(config));
+  }
+
   const openWindow = () => {
     // Create the browser window.
     mainWindow = new BrowserWindow({
@@ -45,6 +58,7 @@ function createWindow() {
       height: 1000,
       webPreferences: {
         nodeIntegration: true,
+        enableRemoteModule: true,
       },
     });
     // mainWindow.once('ready-to-show', () => {
@@ -57,7 +71,6 @@ function createWindow() {
     // and load the index.html of the app.
     const mode = process.env.NODE_ENV;
     const url = mode !== 'production' ? `file://${path.join(__dirname, './public/index.html')}` : 'http://localhost:5000';
-    console.log(url);
     mainWindow.loadURL(url);
 
 
@@ -68,7 +81,12 @@ function createWindow() {
       installExtension(REACT_DEVELOPER_TOOLS);
     }
 
+    ipcMain.on('config', (e, c) => {
+      fs.writeFileSync(configPath, JSON.stringify(c));
+    });
+
     ipcMain.on('ui-up', () => {
+      mainWindow.webContents.send('config', config);
       writeStream = createLogFile();
       // create the telnet connection
       const socket = net.createConnection(23, '23.111.136.202');

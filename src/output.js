@@ -1,8 +1,10 @@
-import { writable } from 'svelte/store';
+import { writable, get } from 'svelte/store';
 import { DefaultMap, strip_colors } from './util';
 import { addItems, extractInvitem, extractInvmon, Item } from './inventory'
+const { ipcRenderer } = require('electron');
 const AU = require('ansi_up');
 const ansiup = new AU.default;
+import { settings } from './settings';
 
 const { subscribe, set, update } = writable({
   log: [],
@@ -140,6 +142,22 @@ export const output = {
   update,
 
   ingest: newMsg => update(self => {
+    if (newMsg.indexOf('What be thy name, adventurer?') > -1) {
+      const { user } = get(settings);
+      if (user.username) {
+        ipcRenderer.send('msg', user.username);
+      } else {
+        settings.gettingUsername = true;
+      }
+    }
+    if (newMsg.indexOf('Existing profile loaded - please enter your password.') > -1) {
+      const { user } = get(settings);
+      if (user.password) {
+        ipcRenderer.send('msg', user.password);
+      } else {
+        settings.gettingPassword = true;
+      }
+    }
     const message = parseMessage(self, newMsg);
     let convertedMsg = ansiup.ansi_to_html(message);
     self.log = [...self.log, convertedMsg];
