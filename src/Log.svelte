@@ -31,7 +31,6 @@
     pre {
         margin: 0;
         white-space: pre-wrap;
-        font-size: 13px;
     }
 </style>
 
