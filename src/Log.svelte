@@ -11,23 +11,6 @@
     }
     // throw scrollToBottom until after new render
     $: setTimeout(() => scrollToBottom($output.log), 10);
-
-    function getInventory(lastLog) {
-        if (!lastLog) return;
-        if (
-            lastLog.indexOf("You drop ") > -1 ||
-            lastLog.indexOf("You get ") > -1 ||
-            lastLog.indexOf("You put ") > -1 ||
-            lastLog.indexOf("You take ") > -1 ||
-            lastLog.indexOf("You remove ") > -1 ||
-            lastLog.indexOf("You take ") > -1
-        ) {
-            ipcRenderer.send('msg', 'inv\n');
-        }
-    }
-
-    // if you get or drop any items, rerequest inventory
-    $: getInventory($output.log[$output.log.length - 1]);
 </script>
 
 <style>

@@ -17,6 +17,6 @@ This client requires that you enable this tags manually for it to parse out map 
 
 Once in game, send these two commands:
 ```
-tags inv on
+invmon
 tags map on
 ```
