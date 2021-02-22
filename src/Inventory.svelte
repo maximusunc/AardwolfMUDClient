@@ -27,7 +27,7 @@
         <ul>
             {#each [...Object.keys($output.containers)].reverse() as containerid}
                 <li class="tab" id="{containerid}_tab" >
-                    <a on:click={() => {openTab = containerid;}}>{@html containerid.match(/[a-z]/i) ? containerid : strip_colors($output.items.get(containerid).itemname)}</a>
+                    <button on:click={() => {openTab = containerid;}}>{@html containerid.match(/[a-z]/i) ? containerid : strip_colors($output.items.get(containerid).itemname)}</button>
                 </li>
             {/each}
         </ul>
@@ -40,12 +40,12 @@
                         {@html $output.items.get(objectid).display()}
                         {#if openTab === "inventory"}
                             {#each $output.items.get(objectid).invactions() as action}
-                                <a on:click={() => {ipcRenderer.send('msg', `${action.command} ${objectid}`);}}>{@html action.label}</a>
+                                <button on:click={() => {ipcRenderer.send('msg', `${action.command} ${objectid}`);}}>{@html action.label}</button>
                             {/each}
                         {:else if openTab === "equipment"}
-                            <a on:click={() => {ipcRenderer.send('msg', `remove ${objectid}`);}}>remove</a>
+                            <button on:click={() => {ipcRenderer.send('msg', `remove ${objectid}`);}}>remove</button>
                         {:else}
-                            <a on:click={() => {ipcRenderer.send('msg', `take ${objectid} ${openTab}`);}}>take</a>
+                            <button on:click={() => {ipcRenderer.send('msg', `take ${objectid} ${openTab}`);}}>take</button>
                         {/if}
                     </li>
                 {/each}
