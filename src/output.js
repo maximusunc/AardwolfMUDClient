@@ -1,9 +1,8 @@
 import { writable } from 'svelte/store';
 import { DefaultMap, strip_colors } from './util';
-import { addItems, extractInvitem, extractInvmon } from './inventory'
+import { addItems, extractInvitem, extractInvmon, Item } from './inventory'
 const AU = require('ansi_up');
 const ansiup = new AU.default;
-const { ipcRenderer } = require('electron');
 
 const { subscribe, set, update } = writable({
   log: [],

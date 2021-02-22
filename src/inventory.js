@@ -1,5 +1,6 @@
 import { captor } from './output';
 import { strip_colors } from './util'
+const { ipcRenderer } = require('electron');
 
 const generalActions = [
   {command: "drop", label: "drop"}
@@ -258,4 +259,4 @@ function askForContainer(containerid, captor) {
   }
 }
 
-export { addItems, invactions, extractInvitem, extractInvmon };
+export { addItems, invactions, extractInvitem, extractInvmon, Item };
