@@ -9,8 +9,6 @@
         grid-column: 2 / span 3;
         grid-row: 2;
         height: 100%;
-        background-color: #fff;
-        color: #000;
     }
     #inventory .tabs {
         height: 20%;
