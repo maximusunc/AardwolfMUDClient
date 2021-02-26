@@ -3,11 +3,11 @@ const { ipcRenderer, remote } = require('electron');
 
 const { subscribe, set, update } = writable({
   user: {},
-  groupActions: {},
+  groupActions: [],
+  userActions: [],
 });
 
 function saveSettings(config) {
-  console.log(config);
   ipcRenderer.send('config', config);
 }
 
@@ -20,7 +20,12 @@ export const settings = {
 
   ingest: msg => update(self => {
     self.user = msg.user;
-    self.groupActions = msg.groupActions;
+    self.groupActions = msg.groupActions || [];
+    // backwards compatibility for a groupActions object
+    if (!Array.isArray(self.groupActions)) {
+      self.groupActions = [];
+    }
+    self.userActions = msg.userActions || [];
     return self;
   }),
   gettingUsername: false,
@@ -34,7 +39,6 @@ export const settings = {
         message: 'Do you want to save these credentials for future logins? You can change this setting by submitting "settings".',
         buttons: ['Yes', 'No'],
       });
-      console.log(save);
       if (save === 0) {
         self.user.autoLogin = true;
         saveSettings(self);
@@ -45,15 +49,26 @@ export const settings = {
     }
     return self;
   }),
-  addGroupAction: groupMember => update(self => {
-    if (!self.groupActions[groupMember]) {
-      self.groupActions[groupMember] = [];
+  addGroupAction: () => update(self => {
+    if (!Array.isArray(self.groupActions)) {
+      self.groupActions = [];
     }
-    self.groupActions[groupMember].push({ label: '', command: '' });
+    self.groupActions.push({ label: '', command: '' });
     return self;
   }),
-  removeGroupAction: (groupMember, ind) => update(self => {
-    self.groupActions[groupMember].splice(ind, 1);
+  removeGroupAction: (ind) => update(self => {
+    self.groupActions.splice(ind, 1);
+    return self;
+  }),
+  addUserAction: () => update(self => {
+    if (!Array.isArray(self.userActions)) {
+      self.userActions = [];
+    }
+    self.userActions.push({ label: '', command: '' });
+    return self;
+  }),
+  removeUserAction: (ind) => update(self => {
+    self.userActions.splice(ind, 1);
     return self;
   }),
 }

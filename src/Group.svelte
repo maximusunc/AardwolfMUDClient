@@ -141,13 +141,12 @@
                     </div>
                 </div>
                 <div class="memberActions">
-                    {#if $settings.groupActions[member.name]}
-                        {#each $settings.groupActions[member.name] as action, i}
-                            <button on:click={() => ipcRenderer.send('msg', action.command)}>{action.label}</button>
+                        {#each $settings.groupActions as action, i}
+                            <button on:click={() => ipcRenderer.send('msg', `${action.command} ${member.name}`)}>{action.label}</button>
                         {/each}
-                    {/if}
                 </div>
             </div>
+            {/if}
         {/each}
     {/if}
 </div>
