@@ -52,10 +52,21 @@
                             <input type="text" bind:value={action.command} />
                             <button on:click={() => settings.removeGroupAction(member.name, i)}>Remove Action</button>
                         {/each}
-                    {/if}
-                    <button on:click={() => settings.addGroupAction(member.name)}>Add Action</button>
+            <h2>User Actions</h2>
+            {#each $settings.userActions as action, i}
+                <div class="actionRow">
+                    <div>
+                        <label for={`userLabel${i}`}>Label</label>
+                        <input id={`userLabel${i}`} type="text" bind:value={action.label} />
+                    </div>
+                    <div>
+                        <label for={`userCommand${i}`}>Command</label>
+                        <input id={`userCommand${i}`} type="text" bind:value={action.command} />
+                    </div>
+                    <button on:click={() => settings.removeUserAction(i)}>X</button>
+                </div>
                 {/each}
-            {/if}
+            <button on:click={() => settings.addUserAction()}>Add User Action</button>
             <!-- stuff updates for the current session, but you need to save to persist -->
             <button on:click={() => settings.save($settings)}>Save</button>
         </div>
