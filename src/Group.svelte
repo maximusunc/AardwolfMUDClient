@@ -1,6 +1,7 @@
 <script>
     import { gmcp } from './gmcp';
     import { settings } from './settings';
+    import { output } from './output.js';
     const { ipcRenderer } = require('electron');
 </script>
 
@@ -80,8 +81,42 @@
 </style>
 
 <div id="group">
+    {#if $gmcp.vitals.hp}
+        <div class="memberContainer">
+            <div class="memberInfo">
+                <!-- Own character will always come first in group section -->
+                <!-- will also show even when not in group -->
+                <h5>
+                    {$gmcp.stats.lvl}: <span class="here">{$gmcp.name}</span>
+                </h5>
+                <h5>Align: {$gmcp.stats.align}</h5>
+                <h5>TNL: {$gmcp.stats.tnl}</h5>
+                <h5>Quest: {$output.qt}</h5>
+            </div>
+            <div class="memberStats">
+                <div class="meter">
+                    <span class="health" style={`width: ${$gmcp.vitals.hp / $gmcp.vitals.mhp * 100}%`}></span>
+                    <div>Health {$gmcp.vitals.hp}/{$gmcp.vitals.mhp}</div>
+                </div>
+                <div class="meter">
+                    <span class="mana" style={`width: ${$gmcp.vitals.mn / $gmcp.vitals.mmn * 100}%`}></span>
+                    <div>Mana {$gmcp.vitals.mn}/{$gmcp.vitals.mmn}</div>
+                </div>
+                <div class="meter">
+                    <span class="moves" style={`width: ${$gmcp.vitals.mv / $gmcp.vitals.mmv * 100}%`}></span>
+                    <div>Moves {$gmcp.vitals.mv}/{$gmcp.vitals.mmv}</div>
+                </div>
+            </div>
+            <div class="memberActions">
+                {#each $settings.groupActions as action, i}
+                    <button on:click={() => ipcRenderer.send('msg', `${action.command} ${$gmcp.name}`)}>{action.label}</button>
+                {/each}
+            </div>
+        </div>
+    {/if}
     {#if $gmcp.group.members}
         {#each $gmcp.group.members as member, i}
+            {#if member.name !== $gmcp.name}
             <div class="memberContainer">
                 <div class="memberInfo">
                     <h5>
