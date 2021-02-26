@@ -2,6 +2,7 @@ import { writable } from 'svelte/store';
 
 const { subscribe, set, update } = writable({
   stats: {},
+  name: '',
   enemy: {},
   sustenance: {},
   vitals: {},
@@ -17,18 +18,19 @@ function parseStatus(self, gmcpData) {
   const status = JSON.parse(gmcpData);
   self.enemy = { name: status.enemy, health: status.enemypct };
   self.sustenance = { hunger: status.hunger, thirst: status.thirst };
+  self.stats.lvl = status.level;
   self.stats.tnl = status.tnl;
   self.stats.align = status.align;
 }
 
 function parseVitals(self, gmcpData) {
   const vitals = JSON.parse(gmcpData);
-  self.vitals = { ...self.vitals, hp: vitals.hp, mana: vitals.mana, moves: vitals.moves };
+  self.vitals = { ...self.vitals, hp: vitals.hp, mn: vitals.mana, mv: vitals.moves };
 }
 
 function parseMaxstats(self, gmcpData) {
   const maxstats = JSON.parse(gmcpData);
-  self.vitals = { ...self.vitals, maxhp: maxstats.maxhp, maxmn: maxstats.maxmana, maxmv: maxstats.maxmoves };
+  self.vitals = { ...self.vitals, mhp: maxstats.maxhp, mmn: maxstats.maxmana, mmv: maxstats.maxmoves };
 }
 
 export const gmcp = {
@@ -63,7 +65,8 @@ export const gmcp = {
         break;
       case 'char.base':
         // { "name": "Maximusunc", "class": "Thief", "subclass": "Ninja", "race": "Wolfen", "clan": "", "pretitle": "", "perlevel": 1000, "tier": 0, "remorts": 1, "redos": 0, "classes" : "2", "level": 136, "pups": 0, "totpups": 0 }
-        // console.log('char base');
+        const base = JSON.parse(gmcpData);
+        self.name = base.name;
         break;
       case 'comm.quest':
         console.log('quest info:', gmcpData);
