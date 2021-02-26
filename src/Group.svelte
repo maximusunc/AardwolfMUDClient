@@ -40,8 +40,6 @@
         height: 10%; /* Can be anything */
         position: relative;
         background: #616E7C;
-        -moz-border-radius: 25px;
-        -webkit-border-radius: 25px;
         border-radius: 25px;
         padding: 5px;
         box-shadow: inset 0 -1px 1px rgba(255, 255, 255, 0.3);
@@ -50,8 +48,8 @@
         display: flex;
         align-items: center;
         height: 100%;
-        border-top-right-radius: 8px;
-        border-bottom-right-radius: 8px;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
         border-top-left-radius: 20px;
         border-bottom-left-radius: 20px;
         box-shadow: 
@@ -117,35 +115,35 @@
     {#if $gmcp.group.members}
         {#each $gmcp.group.members as member, i}
             {#if member.name !== $gmcp.name}
-            <div class="memberContainer">
-                <div class="memberInfo">
-                    <h5>
-                        {member.info.lvl}: <span class={member.info.here ? 'here' : ''}>{member.name}</span>
-                    </h5>
-                    <h5>Align: {member.info.align}</h5>
-                    <h5>TNL: {member.info.tnl}</h5>
-                    <h5>Quest: {member.info.qt}{member.info.qs === 1 ? '*' : ''}</h5>
-                </div>
-                <div class="memberStats">
-                    <div class="meter">
-                        <span class="health" style={`width: ${member.info.hp / member.info.mhp * 100}%`}></span>
-                        <div>Health {member.info.hp}/{member.info.mhp}</div>
+                <div class="memberContainer">
+                    <div class="memberInfo">
+                        <h5>
+                            {member.info.lvl}: <span class={member.info.here ? 'here' : ''}>{member.name}</span>
+                        </h5>
+                        <h5>Align: {member.info.align}</h5>
+                        <h5>TNL: {member.info.tnl}</h5>
+                        <h5>Quest: {member.info.qt}{member.info.qs === 1 ? '*' : ''}</h5>
                     </div>
-                    <div class="meter">
-                        <span class="mana" style={`width: ${member.info.mn / member.info.mmn * 100}%`}></span>
-                        <div>Mana {member.info.mn}/{member.info.mmn}</div>
+                    <div class="memberStats">
+                        <div class="meter">
+                            <span class="health" style={`width: ${member.info.hp / member.info.mhp * 100}%`}></span>
+                            <div>Health {member.info.hp}/{member.info.mhp}</div>
+                        </div>
+                        <div class="meter">
+                            <span class="mana" style={`width: ${member.info.mn / member.info.mmn * 100}%`}></span>
+                            <div>Mana {member.info.mn}/{member.info.mmn}</div>
+                        </div>
+                        <div class="meter">
+                            <span class="moves" style={`width: ${member.info.mv / member.info.mmv * 100}%`}></span>
+                            <div>Moves {member.info.mv}/{member.info.mmv}</div>
+                        </div>
                     </div>
-                    <div class="meter">
-                        <span class="moves" style={`width: ${member.info.mv / member.info.mmv * 100}%`}></span>
-                        <div>Moves {member.info.mv}/{member.info.mmv}</div>
-                    </div>
-                </div>
-                <div class="memberActions">
+                    <div class="memberActions">
                         {#each $settings.groupActions as action, i}
                             <button on:click={() => ipcRenderer.send('msg', `${action.command} ${member.name}`)}>{action.label}</button>
                         {/each}
+                    </div>
                 </div>
-            </div>
             {/if}
         {/each}
     {/if}

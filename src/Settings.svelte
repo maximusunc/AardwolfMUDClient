@@ -23,6 +23,20 @@
         background: white;
         color: black;
         border-radius: 15px;
+        overflow: auto;
+        position: relative;
+    }
+    #close {
+        position: absolute;
+        right: 0;
+        padding: 10px 30px;
+        border: none;
+        background: none;
+        border-bottom-left-radius: 10px;
+    }
+    #close:hover {
+        background: grey;
+        color: white;
     }
     h1 {
         text-align: center;
@@ -30,28 +44,66 @@
     input {
         display: block;
     }
+    .actionRow {
+        display: flex;
+        align-items: center;
+    }
+    .actionRow > * {
+        padding: 5px 10px;
+    }
+    #save {
+        display: flex;
+        justify-content: center;
+        padding: 20px 20px 30px 20px;
+    }
+    #save > button {
+        padding: 10px;
+        border-radius: 10px;
+    }
 </style>
 
 {#if $open}
     <div id="settingsContainer">
         <div id="settings">
-            <button on:click={() => open.set(false)}>X</button>
+            <button
+                on:click={() => {
+                    open.set(false);
+                    settings.save($settings);
+                }}
+                id="close"
+            >
+                X
+            </button>
             <h1>Settings</h1>
-            <label for="username">Username</label>
-            <input type="text" id="username" bind:value={$settings.user.username} />
-            <label for="password">Password</label>
-            <input type="password" id="password" bind:value={$settings.user.password} />
-            <label for="autologin">Auto login</label>
-            <input type="checkbox" id="checkbox" bind:checked={$settings.user.autoLogin} />
-            {#if $gmcp.group.members}
-                {#each $gmcp.group.members as member, i}
-                    <p>{member.name}</p>
-                    {#if $settings.groupActions[member.name]}
-                        {#each $settings.groupActions[member.name] as action, i}
-                            <input type="text" bind:value={action.label} />
-                            <input type="text" bind:value={action.command} />
-                            <button on:click={() => settings.removeGroupAction(member.name, i)}>Remove Action</button>
-                        {/each}
+            <div class="actionRow">
+                <div>
+                    <label for="username">Username</label>
+                    <input type="text" id="username" bind:value={$settings.user.username} />
+                </div>
+                <div>
+                    <label for="password">Password</label>
+                    <input type="password" id="password" bind:value={$settings.user.password} />
+                </div>
+                <div>
+                    <label for="autologin">Auto login</label>
+                    <input type="checkbox" id="checkbox" bind:checked={$settings.user.autoLogin} />
+                </div>
+            </div>
+            <h2>Group Actions</h2>
+            {#each $settings.groupActions as action, i}
+                <div class="actionRow">
+                    <div>
+                        <label for={`groupLabel${i}`}>Label</label>
+                        <input id={`groupLabel${i}`} type="text" bind:value={action.label} />
+                    </div>
+                    <div>
+                        <label for={`groupCommand${i}`}>Command</label>
+                        <input id={`groupCommand${i}`} type="text" bind:value={action.command} />
+                    </div>
+                    <button on:click={() => settings.removeGroupAction(i)}>X</button>
+                </div>
+            {/each}
+            <button on:click={() => settings.addGroupAction()}>Add Group Action</button>
             <h2>User Actions</h2>
             {#each $settings.userActions as action, i}
                 <div class="actionRow">
@@ -65,10 +117,12 @@
                     </div>
                     <button on:click={() => settings.removeUserAction(i)}>X</button>
                 </div>
-                {/each}
+            {/each}
             <button on:click={() => settings.addUserAction()}>Add User Action</button>
             <!-- stuff updates for the current session, but you need to save to persist -->
-            <button on:click={() => settings.save($settings)}>Save</button>
+            <div id="save">
+                <button on:click={() => settings.save($settings)}>Save</button>
+            </div>
         </div>
     </div>
 {/if}
