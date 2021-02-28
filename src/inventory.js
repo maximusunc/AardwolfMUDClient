@@ -86,6 +86,7 @@ class Item {
  * @param {string} containerid - the container to which to add the items
  */
 function addItems(self, invdata = "", containerid = "inventory") {
+  invdata = invdata.replace(/^\s+|\s+$/g, "");
   if (!invdata) {
     return
   }
