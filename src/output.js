@@ -49,11 +49,11 @@ class Captor {
         // console.log(`checking for "${handler.openTag}"`);
         if (msg.match(handler.openTag)) {
           // grab everything after opening tag
-          let bits = msg.split(handler.openTag);
-          if (bits.length == 3) {
-            [precontent, containerid, content] = bits;
-          } else {
-            [precontent, content] = bits;
+          let openMatch = msg.match(handler.openTag);
+          precontent = msg.slice(0, openMatch.index);
+          content = msg.slice(openMatch.index + openMatch[0].length)
+          if (openMatch.length > 1) {
+            containerid = openMatch[1]
           }
           containerid = containerid ? containerid : key;
           this.current = containerid;
@@ -66,10 +66,12 @@ class Captor {
       return msg;
     }
     // console.log(`checking for "${handler.closeTag}"`);
+    let closeMatch = content.match(handler.closeTag);
     let finish = false;
-    if (content.indexOf(handler.closeTag) > -1) {
+    if (closeMatch) {
       // grab everything before closing tag
-      [content, postcontent] = content.split(handler.closeTag);
+      postcontent = content.slice(closeMatch.index + closeMatch[0].length);
+      content = content.slice(0, closeMatch.index);
       finish = true;
     }
     // save buffer
@@ -83,15 +85,17 @@ class Captor {
       this.awaiting.delete(this.current);
       this.current = "";
       this.buffer = "";
+      return precontent + this.extractBetweenTags(self, postcontent);
+    } else {
+      return precontent + postcontent;
     }
-    return precontent + postcontent;
   }
 }
 
 let captor = new Captor();
 captor.handlers["map"] = {
-  "openTag": "<MAPSTART>",
-  "closeTag": "<MAPEND>",
+  "openTag": /<MAPSTART>/,
+  "closeTag": /<MAPEND>/,
   "callback": (self, content) => {
     self.map = ansiup.ansi_to_html(content);
   }
@@ -104,8 +108,8 @@ captor.handlers["inventory"] = {
   },
 }
 captor.handlers["equipment"] = {
-  "openTag": "{eqdata}\n",
-  "closeTag": "\n{/eqdata}",
+  "openTag": /\{eqdata\}/,
+  "closeTag": /\{\/eqdata\}/,
   "callback": (self, content) => {
     addItems(self, content, "equipment");
   },
