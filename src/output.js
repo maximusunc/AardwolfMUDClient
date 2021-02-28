@@ -97,8 +97,8 @@ captor.handlers["map"] = {
   }
 }
 captor.handlers["inventory"] = {
-  "openTag": /\{invdata(?: (\w+))?\}\n/,
-  "closeTag": "\n{/invdata}",
+  "openTag": /\{invdata(?: (\w+))?\}/,
+  "closeTag": /\{\/invdata\}/,
   "callback": (self, content, type) => {
     addItems(self, content, type);
   },
