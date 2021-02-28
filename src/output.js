@@ -49,7 +49,7 @@ class Captor {
         // console.log(`checking for "${handler.openTag}"`);
         if (msg.match(handler.openTag)) {
           // grab everything after opening tag
-          let openMatch = msg.match(handler.openTag);
+          const openMatch = msg.match(handler.openTag);
           precontent = msg.slice(0, openMatch.index);
           content = msg.slice(openMatch.index + openMatch[0].length)
           if (openMatch.length > 1) {
@@ -66,7 +66,7 @@ class Captor {
       return msg;
     }
     // console.log(`checking for "${handler.closeTag}"`);
-    let closeMatch = content.match(handler.closeTag);
+    const closeMatch = content.match(handler.closeTag);
     let finish = false;
     if (closeMatch) {
       // grab everything before closing tag
