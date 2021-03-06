@@ -11,7 +11,10 @@ const itemActions = {
   2: [{command: "recite", label: "use (on self)"}], // scroll
   3: [{command: "hold", label: "hold"}], // wand
   4: [{command: "hold", label: "hold"}], // stave
-  5: [{command: "wield", label: "wield"}], // weapon
+  5: [ // weapon
+    {command: "wield", label: "wield"},
+    {command: "dual", label: "dual"},
+  ],
   6: [], // treasure
   7: [{command: "wear", label: "wear"}], // armor
   8: [{command: "quaff", label: "quaff"}], // potion
@@ -28,7 +31,7 @@ const itemActions = {
   16: [], // mob corpse
   17: [], // player corpse
   18: [], // fountain
-  19: [], // pill
+  19: [{command: "eat", label: "eat"}], // pill
   20: [{command: "hold", label: "hold"}], // portal
   21: [], // beacon
   22: [], // gift card
