@@ -15,7 +15,7 @@
     padding: 0px 10px;
   }
   .meter {
-    height: 14%; /* Can be anything */
+    height: 14%;
     position: relative;
     background: #616E7C;
     -moz-border-radius: 25px;
@@ -23,6 +23,8 @@
     border-radius: 25px;
     padding: 5px;
     box-shadow: inset 0 -1px 1px rgba(255, 255, 255, 0.3);
+  }
+  .meter:last-child {
     margin-bottom: 15px;
   }
   .meter > span {
@@ -48,6 +50,10 @@
     background-color: #efd300;
     background-image: linear-gradient(to bottom, #efd300, #ceb600);
   }
+  span.health {
+    background-color: #f0a3a3;
+    background-image: linear-gradient(to bottom, #f0a3a3, #f42323);
+  }
 </style>
 
 <div id="statsContainer">
@@ -56,6 +62,12 @@
     {#each $settings.userActions as action, i}
       <button on:click={() => ipcRenderer.send('msg', action.command)}>{action.label}</button>
     {/each}
+  </div>
+  <div class="meter">
+    {#if $gmcp.vitals.hp}
+      <span class="health" style={`width: ${$gmcp.vitals.hp / $gmcp.vitals.mhp * 100}%`}></span>
+      <div>Health {$gmcp.vitals.hp}/{$gmcp.vitals.mhp}</div>
+    {/if}
   </div>
   <div class="meter">
     {#if $gmcp.enemy.name}
