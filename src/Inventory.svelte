@@ -1,6 +1,7 @@
 <script>
-    import { captor, output, strip_colors } from './output';
-    const { ipcRenderer } = require('electron');
+    import Container from './Container.svelte';
+    import Equipment from './Equipment.svelte';
+    import { output, strip_colors } from './output';
     let openTab = "inventory";
 </script>
 
@@ -32,22 +33,11 @@
     </div>
     <div class="contents">
         {#if openTab in $output.containers}
-            <ul>
-                {#each [...$output.containers[openTab]].reverse() as objectid}
-                    <li>
-                        {@html $output.items.get(objectid).display()}
-                        {#if openTab === "inventory"}
-                            {#each $output.items.get(objectid).invactions() as action}
-                                <button on:click={() => {ipcRenderer.send('msg', `${action.command} ${objectid}`);}}>{@html action.label}</button>
-                            {/each}
-                        {:else if openTab === "equipment"}
-                            <button on:click={() => {ipcRenderer.send('msg', `remove ${objectid}`);}}>remove</button>
-                        {:else}
-                            <button on:click={() => {ipcRenderer.send('msg', `take ${objectid} ${openTab}`);}}>take</button>
-                        {/if}
-                    </li>
-                {/each}
-            </ul>
+            {#if openTab === "equipment"}
+                <Equipment />
+            {:else}
+                <Container id={openTab} />
+            {/if}
         {/if}
     </div>
 </div>
