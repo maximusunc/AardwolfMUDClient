@@ -4,10 +4,18 @@
     const { ipcRenderer } = require('electron');
 </script>
 
+<style>
+    .contentItem {
+        padding: 2px;
+    }
+    .contentItem > button {
+        margin-left: 5px;
+    }
+</style>
 
-<ul>
+<div>
     {#each [...$output.containers[id]].reverse() as objectid}
-        <li>
+        <div class="contentItem">
             {@html $output.items.get(objectid).display()}
             {#if id === "inventory"}
                 <button on:click={() => {ipcRenderer.send('msg', `id ${objectid}`);}}>details</button>
@@ -17,6 +25,6 @@
             {:else}
                 <button on:click={() => {ipcRenderer.send('msg', `take ${objectid} ${id}`);}}>take</button>
             {/if}
-        </li>
+        </div>
     {/each}
-</ul>
+</div>

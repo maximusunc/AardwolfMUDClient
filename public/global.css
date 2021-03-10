@@ -8,4 +8,9 @@ body {
 }
 button {
     cursor: pointer;
+    background: #CBD2D9;
+    border-radius: 5px;
+}
+button:hover {
+    background: #E4E7EB;
 }

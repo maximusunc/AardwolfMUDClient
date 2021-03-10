@@ -43,10 +43,19 @@
     }
 </script>
 
+<style>
+    .contentItem {
+        padding: 2px;
+    }
+    .contentItem > button {
+        margin-left: 5px;
+    }
+</style>
 
-<ul>
+
+<div>
     {#each Object.values(wearLocs).map((wearLoc) => [wearLoc, equipment[wearLoc]]) as [wearLoc, objectid]}
-        <li>
+        <div class="contentItem">
             {@html wearLoc}:
             {#if $output.items.has(objectid)}
                 {@html $output.items.get(objectid).display()}
@@ -55,6 +64,6 @@
             {:else}
                 empty
             {/if}
-        </li>
+        </div>
     {/each}
-</ul>
+</div>

@@ -54,10 +54,13 @@
     background-color: #f0a3a3;
     background-image: linear-gradient(to bottom, #f0a3a3, #f42323);
   }
+  #userActions > button {
+    margin-right: 5px;
+  }
 </style>
 
 <div id="statsContainer">
-  <div>
+  <div id="userActions">
     <p>User actions</p>
     {#each $settings.userActions as action, i}
       <button on:click={() => ipcRenderer.send('msg', action.command)}>{action.label}</button>
