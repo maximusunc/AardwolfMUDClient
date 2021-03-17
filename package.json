@@ -2,13 +2,15 @@
   "name": "aardwolf-client",
   "version": "0.0.1",
   "description": "Aardwolf MUD Client",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
     "svelte-build": "rollup -c",
     "start-electron": "electron main.js -d",
     "dev": "npm run svelte-build && npm run start-electron",
     "start": "rollup -c && electron main.js",
-    "start-old": "node index.js"
+    "start-old": "node index.js",
+    "package": "electron-builder",
+    "postinstall": "electron-builder install-app-deps"
   },
   "author": "Max Wang",
   "license": "ISC",
@@ -21,6 +23,7 @@
   },
   "devDependencies": {
     "electron": "^11.2.1",
+    "electron-builder": "^22.10.5",
     "electron-devtools-installer": "^3.1.1",
     "rollup": "^2.38.0",
     "rollup-plugin-commonjs": "^10.1.0",

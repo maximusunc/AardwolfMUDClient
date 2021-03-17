@@ -3,3 +3,4 @@ node_modules/
 python_client
 logs
 build
+pack
