@@ -12,8 +12,13 @@ app.commandLine.appendSwitch('disable-gpu');
 
 const path = require('path');
 
-if (!fs.existsSync('logs')) {
-  fs.mkdirSync('logs');
+const userDir = userDataDir('aardwolfMUD', false, null, true);
+if (!fs.existsSync(userDir)) {
+  fs.mkdirSync(userDir, { recursive: true });
+}
+const logsPath = path.join(userDir, 'logs');
+if (!fs.existsSync(logsPath)) {
+  fs.mkdirSync(logsPath);
 }
 
 function createLogFile() {
@@ -21,7 +26,7 @@ function createLogFile() {
   // this is stupid, but it can't be inline
   const day = now.getDate();
   const timestamp = `${now.getFullYear()}_${now.getMonth() + 1}_${day}_${now.getHours()}_${now.getMinutes()}`;
-  const writeStream = fs.createWriteStream(`logs/${timestamp}.log`);
+  const writeStream = fs.createWriteStream(path.join(logsPath, `${timestamp}.log`));
   return writeStream;
 }
 
@@ -47,7 +52,6 @@ function createWindow() {
     const rawConfig = fs.readFileSync(configPath);
     config = JSON.parse(rawConfig);
   } else {
-    fs.mkdirSync(userDir, { recursive: true });
     fs.writeFileSync(configPath, JSON.stringify(config));
   }
 
