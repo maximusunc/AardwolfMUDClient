@@ -126,15 +126,15 @@
                     </div>
                     <div class="memberStats">
                         <div class="meter">
-                            <span class="health" style={`width: ${member.info.hp / member.info.mhp * 100}%`}></span>
+                            <span class="health" style={`width: ${Math.min(member.info.hp / member.info.mhp * 100, 100)}%`}></span>
                             <div>Health {member.info.hp}/{member.info.mhp}</div>
                         </div>
                         <div class="meter">
-                            <span class="mana" style={`width: ${member.info.mn / member.info.mmn * 100}%`}></span>
+                            <span class="mana" style={`width: ${Math.min(member.info.mn / member.info.mmn * 100, 100)}%`}></span>
                             <div>Mana {member.info.mn}/{member.info.mmn}</div>
                         </div>
                         <div class="meter">
-                            <span class="moves" style={`width: ${member.info.mv / member.info.mmv * 100}%`}></span>
+                            <span class="moves" style={`width: ${Math.min(member.info.mv / member.info.mmv * 100, 100)}%`}></span>
                             <div>Moves {member.info.mv}/{member.info.mmv}</div>
                         </div>
                     </div>

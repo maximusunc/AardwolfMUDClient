@@ -68,7 +68,7 @@
   </div>
   <div class="meter">
     {#if $gmcp.vitals.hp}
-      <span class="health" style={`width: ${$gmcp.vitals.hp / $gmcp.vitals.mhp * 100}%`}></span>
+      <span class="health" style={`width: ${Math.min($gmcp.vitals.hp / $gmcp.vitals.mhp * 100, 100)}%`}></span>
       <div>Health {$gmcp.vitals.hp}/{$gmcp.vitals.mhp}</div>
     {/if}
   </div>
