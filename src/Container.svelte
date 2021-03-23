@@ -20,7 +20,17 @@
             {#if id === "inventory"}
                 <button on:click={() => {ipcRenderer.send('msg', `id ${objectid}`);}}>details</button>
                 {#each $output.items.get(objectid).invactions() as action}
-                    <button on:click={() => {ipcRenderer.send('msg', `${action.command} ${objectid}`);}}>{@html action.label}</button>
+                    <button
+                        on:click={() => {
+                            let command = `${action.command} ${objectid}`;
+                            if (action.command === 'invdata') {
+                                command = `invdata ${objectid} ansi`;
+                            }
+                            ipcRenderer.send('msg', command);
+                        }}
+                    >
+                        {@html action.label}
+                    </button>
                 {/each}
             {:else}
                 <button on:click={() => {ipcRenderer.send('msg', `take ${objectid} ${id}`);}}>take</button>
