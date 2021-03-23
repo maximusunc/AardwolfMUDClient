@@ -20,3 +20,8 @@ Once in game, send these two commands:
 invmon
 tags map on
 ```
+
+## Building an installer
+```bash
+npm package
+```
