@@ -1,0 +1,20 @@
+appId: "wang.aardwolf-mud"
+productName: "Aardwolf MUD Client"
+copyright: "All rights reserved"
+mac:
+    category: "public.app-category.utilities"
+    identity: null
+win:
+    target: "nsis"
+nsis:
+    oneClick: false
+    perMachine: true
+    allowToChangeInstallationDirectory: true
+    warningsAsErrors: false
+directories:
+    output: "./pack"
+files: [
+    "public/**",
+    "main.js"
+]
+asar: true
