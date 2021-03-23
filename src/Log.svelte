@@ -1,16 +1,19 @@
 <script>
     import { output } from './output';
-    const { ipcRenderer } = require('electron');
+    import { beforeUpdate, afterUpdate } from 'svelte';
+    let log;
+    let autoscroll;
 
-    function scrollToBottom() {
+    beforeUpdate(() => {
+        autoscroll = log && log.scrollHeight - log.clientHeight <= log.scrollTop + 10;
+    });
+
+    afterUpdate(() => {
         // scroll output to bottom
-        const element = document.getElementById('log');
-        if (element) {
-            element.scrollTop = element.scrollHeight - element.clientHeight;
+        if (autoscroll) {
+            log.scrollTop = log.scrollHeight - log.clientHeight;
         }
-    }
-    // throw scrollToBottom until after new render
-    $: setTimeout(() => scrollToBottom($output.log), 10);
+    });
 </script>
 
 <style>
@@ -35,7 +38,7 @@
 </style>
 
 <div id="logContainer">
-    <div id="log">
+    <div id="log" bind:this={log}>
         {#each $output.log as msg, i}
             <pre>{@html msg}</pre>
         {/each}
