@@ -210,7 +210,7 @@ let invactions = {
  * @param {string} msg - a telnet message
  */
 function extractInvmon(self, msg) {
-  let invmon = msg.match(/(?<=\{invmon\}).*?$/gm);
+  let invmon = msg.match(/(?<=\{invmon\}).*?\n/gm);
   if (!invmon) {
     return msg;
   }
@@ -218,7 +218,7 @@ function extractInvmon(self, msg) {
     let [action, objectid, containerid, wear_loc] = line.split(",");
     invactions[action](self, objectid, containerid, wear_loc);
   });
-  return msg.replace(/\{invmon\}.*?$/gm, "");
+  return msg.replace(/\{invmon\}.*?\n/gm, "");
 }
 
 /**
