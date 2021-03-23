@@ -1,5 +1,5 @@
 import { writable, get } from 'svelte/store';
-import { DefaultMap, strip_colors } from './util';
+import { DefaultMap, fix_colors } from './util';
 import { addItems, extractInvitem, extractInvmon, Item } from './inventory'
 const { ipcRenderer } = require('electron');
 const AU = require('ansi_up');
@@ -168,4 +168,4 @@ export const output = {
     return self;
   }),
 };
-export { captor, strip_colors };
+export { captor, fix_colors };

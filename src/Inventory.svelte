@@ -1,7 +1,7 @@
 <script>
     import Container from './Container.svelte';
     import Equipment from './Equipment.svelte';
-    import { output, strip_colors } from './output';
+    import { output, fix_colors } from './output';
     let openTab = "inventory";
 </script>
 
@@ -44,7 +44,7 @@
                 on:click={() => {openTab = containerid;}}
                 class={`tab${openTab === containerid ? ' active' : ''}`}
             >
-                {@html containerid.match(/[a-z]/i) ? containerid : strip_colors($output.items.get(containerid).itemname)}
+                {@html containerid.match(/[a-z]/i) ? containerid : fix_colors($output.items.get(containerid).itemname)}
             </button>
         {/each}
     </div>
