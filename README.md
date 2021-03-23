@@ -23,5 +23,5 @@ tags map on
 
 ## Building an installer
 ```bash
-npm package
+npm run package
 ```
