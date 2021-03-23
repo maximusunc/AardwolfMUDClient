@@ -7,32 +7,32 @@ const generalActions = [
 ]
 
 const itemActions = {
-  1: [{command: "hold", label: "hold"}], // light
-  2: [{command: "recite", label: "use (on self)"}], // scroll
-  3: [{command: "hold", label: "hold"}], // wand
-  4: [{command: "hold", label: "hold"}], // stave
+  1: [{command: oid => `hold ${oid}`, label: "hold"}], // light
+  2: [{command: oid => `recite ${oid}`, label: "use (on self)"}], // scroll
+  3: [{command: oid => `hold ${oid}`, label: "hold"}], // wand
+  4: [{command: oid => `hold ${oid}`, label: "hold"}], // stave
   5: [ // weapon
-    {command: "wield", label: "wield"},
-    {command: "dual", label: "dual"},
+    {command: oid => `wield ${oid}`, label: "wield"},
+    {command: oid => `dual ${oid}`, label: "dual"},
   ],
   6: [], // treasure
-  7: [{command: "wear", label: "wear"}], // armor
-  8: [{command: "quaff", label: "quaff"}], // potion
+  7: [{command: oid => `wear ${oid}`, label: "wear"}], // armor
+  8: [{command: oid => `quaff ${oid}`, label: "quaff"}], // potion
   9: [], // furniture
   10: [], // trash
   11: [ // container
-    {command: "look in", label: "look"},
-    {command: "invdata", label: "monitor"},
+    {command: oid => `look in ${oid}`, label: "look"},
+    {command: oid => `invdata ${oid} ansi`, label: "monitor"},
   ],
-  12: [{command: "drink", label: "drink"}], // drink container
+  12: [{command: oid => `drink ${oid}`, label: "drink"}], // drink container
   13: [], // key
-  14: [{command: "eat", label: "eat"}], // food
+  14: [{command: oid => `eat ${oid}`, label: "eat"}], // food
   15: [], // boat
   16: [], // mob corpse
   17: [], // player corpse
   18: [], // fountain
-  19: [{command: "eat", label: "eat"}], // pill
-  20: [{command: "hold", label: "hold"}], // portal
+  19: [{command: oid => `eat ${oid}`, label: "eat"}], // pill
+  20: [{command: oid => `hold ${oid}`, label: "hold"}], // portal
   21: [], // beacon
   22: [], // gift card
   23: [], // unused

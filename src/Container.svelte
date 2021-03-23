@@ -22,10 +22,7 @@
                 {#each $output.items.get(objectid).invactions() as action}
                     <button
                         on:click={() => {
-                            let command = `${action.command} ${objectid}`;
-                            if (action.command === 'invdata') {
-                                command = `invdata ${objectid} ansi`;
-                            }
+                            let command = action.command(objectid);
                             ipcRenderer.send('msg', command);
                         }}
                     >
