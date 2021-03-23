@@ -1,9 +1,12 @@
+const AU = require('ansi_up');
+const ansiup = new AU.default;
+
 /**
  * Strip ANSI and Aardwolf-style color tags from a string.
  * @param {string} str - string to be modified
  */
-function strip_colors(str) {
-  return str.replace(/@./g, "").replace(/\u001B\[\d;\d\dm/g, "")
+function fix_colors(str) {
+  return ansiup.ansi_to_html(str);
 }
 
 /**
@@ -38,4 +41,4 @@ class DefaultMap extends Map {
   };
 };
 
-export { DefaultMap, strip_colors };
+export { DefaultMap, fix_colors };

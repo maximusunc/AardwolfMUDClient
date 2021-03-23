@@ -1,5 +1,5 @@
 import { captor } from './output';
-import { strip_colors } from './util'
+import { fix_colors } from './util'
 const { ipcRenderer } = require('electron');
 
 const generalActions = [
@@ -73,7 +73,7 @@ class Item {
   }
 
   display() {
-    return `${strip_colors(this.itemname)} (${this.level})`
+    return `${fix_colors(this.itemname)} (${this.level})`
   }
 
   invactions() {
@@ -248,13 +248,13 @@ function askForContainer(containerid, captor) {
   let msg;
   switch (containerid) {
     case "inventory":
-      msg = "invdata";
+      msg = "invdata ansi";
       break
     case "equipment":
-      msg = "eqdata";
+      msg = "eqdata ansi";
       break;
     default:
-      msg = `invdata ${containerid}`;
+      msg = `invdata ${containerid} ansi`;
   }
   if (!captor.awaiting.has(containerid)) {
     // console.log(`awaiting ${containerid}`);
