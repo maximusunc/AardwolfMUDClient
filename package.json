@@ -15,7 +15,7 @@
   "author": "Max Wang",
   "license": "ISC",
   "dependencies": {
-    "ansi_up": "^4.0.4",
+    "ansi_up": "^5.0.0",
     "appdirs": "^1.1.0",
     "blessed": "^0.1.81",
     "neo-blessed": "^0.2.0",
