@@ -8,8 +8,10 @@
     let commandHistory = new Set();
     let historyIndex = 0;
 
-    const handleKeyPress = () => {
-		if (event.code == 'Enter') {
+    function handleKeyPress(event) {
+        if ($open) return;
+        if (event.code === 'Enter') {
+            event.preventDefault();
             // all user settings logic
             if (settings.gettingUsername) {
                 settings.saveUser({ username: command });
@@ -49,14 +51,21 @@
                     return output;
                 });
             }
+        } else {
+            command += event.key;
         }
-        if (event.code === 'ArrowUp') {
+    }
+
+    function handleKeyDown(event) {
+        if ($open) return;
+        if (event.code === 'Backspace') {
+            command = command.substring(0, command.length - 1);
+        } else if (event.code === 'ArrowUp') {
             if (historyIndex > 0) {
                 historyIndex -= 1;
             }
             command = [...commandHistory][historyIndex];
-        }
-        if (event.code === 'ArrowDown') {
+        } else if (event.code === 'ArrowDown') {
             if (historyIndex < commandHistory.size) {
                 historyIndex += 1;
                 command = [...commandHistory][historyIndex];
@@ -78,10 +87,10 @@
     }
 </style>
 
+<svelte:window on:keypress={handleKeyPress} on:keydown={handleKeyDown} />
 <input
     type="text"
     bind:value={command}
     bind:this={input}
-    on:keyup|preventDefault={handleKeyPress}
     placeholder="Telnet command..."
 >
