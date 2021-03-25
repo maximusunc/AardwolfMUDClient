@@ -3,7 +3,7 @@ import { fix_colors } from './util'
 const { ipcRenderer } = require('electron');
 
 const generalActions = [
-  {command: "drop", label: "drop"}
+  {command: oid => `drop ${oid}`, label: "drop"}
 ]
 
 const itemActions = {
