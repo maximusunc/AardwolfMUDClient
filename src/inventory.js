@@ -89,6 +89,7 @@ class Item {
  * @param {string} containerid - the container to which to add the items
  */
 function addItems(self, invdata = "", containerid = "inventory") {
+  self.containers[containerid] = new Set();
   invdata = invdata.trim();
   if (!invdata) {
     return
@@ -96,7 +97,6 @@ function addItems(self, invdata = "", containerid = "inventory") {
 
   let lines = invdata.split("\n");
 
-  self.containers[containerid] = new Set();
   lines.reverse().forEach(function (row) {
     let [objectid, properties] = row.split(/,(.+)/);
     self.items.set(objectid, new Item(properties));
