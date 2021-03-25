@@ -51,16 +51,14 @@
                     return output;
                 });
             }
-        } else {
+        } else if (document.activeElement !== input) {
             command += event.key;
         }
     }
 
     function handleKeyDown(event) {
         if ($open) return;
-        if (event.code === 'Backspace') {
-            command = command.substring(0, command.length - 1);
-        } else if (event.code === 'ArrowUp') {
+        if (event.code === 'ArrowUp') {
             if (historyIndex > 0) {
                 historyIndex -= 1;
             }
@@ -73,6 +71,8 @@
                 // clear input if at the end
                 command = '';
             }
+        } else if (document.activeElement !== input && event.code === 'Backspace') {
+            command = command.substring(0, command.length - 1);
         }
     }
     // focus on input when initialized
