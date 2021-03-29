@@ -215,7 +215,7 @@ function extractInvmon(self, msg) {
     return msg;
   }
   invmon.forEach((line) => {
-    let [action, objectid, containerid, wear_loc] = line.split(/[,\n]/);
+    let [action, objectid, containerid, wear_loc] = line.trim().split(',');
     invactions[action](self, objectid, containerid, wear_loc);
   });
   return msg.replace(/\{invmon\}.*?\n/gm, "");
