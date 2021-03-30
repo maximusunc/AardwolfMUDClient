@@ -82,6 +82,7 @@ class Captor {
       // reset
       this.awaiting.delete(this.current);
       this.current = "";
+      this.containerid = "";
       this.buffer = "";
       return precontent + this.extractBetweenTags(self, postcontent);
     } else {
