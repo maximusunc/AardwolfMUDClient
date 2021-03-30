@@ -21,6 +21,7 @@ class Captor {
    */
   constructor() {
     this.current = "";
+    this.containerid = "";
     this.buffer = "";
     this.awaiting = new Set();
     this.handlers = {};
@@ -36,7 +37,6 @@ class Captor {
     let precontent = "";
     let content = "";
     let postcontent = "";
-    let containerid = "";
     let handler;
 
     if (this.current) {
@@ -52,11 +52,9 @@ class Captor {
           const openMatch = msg.match(handler.openTag);
           precontent = msg.slice(0, openMatch.index);
           content = msg.slice(openMatch.index + openMatch[0].length)
-          if (openMatch.length > 1) {
-            containerid = openMatch[1]
-          }
-          containerid = containerid ? containerid : key;
-          this.current = containerid;
+          this.containerid = openMatch.length > 1 ? openMatch[1] : key;
+          this.current = key;
+
           // console.log(`capturing ${this.current}`);
           break
         }
@@ -78,7 +76,7 @@ class Captor {
     this.buffer = this.buffer + content;
     if (finish) {
       // fire callback
-      handler.callback(self, this.buffer, this.current)
+      handler.callback(self, this.buffer, this.containerid);
       // console.log(`got ${this.current}`);
 
       // reset
