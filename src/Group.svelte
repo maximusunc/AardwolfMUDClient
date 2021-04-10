@@ -38,43 +38,12 @@
     }
     .meter {
         height: 10%; /* Can be anything */
-        position: relative;
-        background: #616E7C;
-        border-radius: 25px;
-        padding: 5px;
-        box-shadow: inset 0 -1px 1px rgba(255, 255, 255, 0.3);
-    }
-    .meter > span {
-        display: flex;
-        align-items: center;
-        height: 100%;
-        border-top-right-radius: 10px;
-        border-bottom-right-radius: 10px;
-        border-top-left-radius: 20px;
-        border-bottom-left-radius: 20px;
-        box-shadow: 
-        inset 0 2px 9px  rgba(255,255,255,0.3),
-        inset 0 -2px 6px rgba(0,0,0,0.4);
-        position: relative;
-        overflow: hidden;
     }
     .meter > div {
         margin-left: 10px;
         position: absolute;
         top: 2px;
         font-size: 12px;
-    }
-    span.health {
-        background-color: #f0a3a3;
-        background-image: linear-gradient(to bottom, #f0a3a3, #f42323);
-    }
-    span.mana {
-        background-color: #f1a165;
-        background-image: linear-gradient(to bottom, #f1a165, #f36d0a);
-    }
-    span.moves {
-        background-color: rgb(43,194,83);
-        background-image: linear-gradient(to bottom,rgb(43,194,83) 37%,rgb(84,240,84) 69%);
     }
 </style>
 
@@ -93,15 +62,15 @@
             </div>
             <div class="memberStats">
                 <div class="meter">
-                    <span class="health" style={`width: ${$gmcp.vitals.hp / $gmcp.vitals.mhp * 100}%`}></span>
+                    <span class="healthBar" style={`width: ${$gmcp.vitals.hp / $gmcp.vitals.mhp * 100}%`}></span>
                     <div>Health {$gmcp.vitals.hp}/{$gmcp.vitals.mhp}</div>
                 </div>
                 <div class="meter">
-                    <span class="mana" style={`width: ${$gmcp.vitals.mn / $gmcp.vitals.mmn * 100}%`}></span>
+                    <span class="manaBar" style={`width: ${$gmcp.vitals.mn / $gmcp.vitals.mmn * 100}%`}></span>
                     <div>Mana {$gmcp.vitals.mn}/{$gmcp.vitals.mmn}</div>
                 </div>
                 <div class="meter">
-                    <span class="moves" style={`width: ${$gmcp.vitals.mv / $gmcp.vitals.mmv * 100}%`}></span>
+                    <span class="movesBar" style={`width: ${$gmcp.vitals.mv / $gmcp.vitals.mmv * 100}%`}></span>
                     <div>Moves {$gmcp.vitals.mv}/{$gmcp.vitals.mmv}</div>
                 </div>
             </div>
@@ -126,15 +95,15 @@
                     </div>
                     <div class="memberStats">
                         <div class="meter">
-                            <span class="health" style={`width: ${Math.min(member.info.hp / member.info.mhp * 100, 100)}%`}></span>
+                            <span class="healthBar" style={`width: ${Math.min(member.info.hp / member.info.mhp * 100, 100)}%`}></span>
                             <div>Health {member.info.hp}/{member.info.mhp}</div>
                         </div>
                         <div class="meter">
-                            <span class="mana" style={`width: ${Math.min(member.info.mn / member.info.mmn * 100, 100)}%`}></span>
+                            <span class="manaBar" style={`width: ${Math.min(member.info.mn / member.info.mmn * 100, 100)}%`}></span>
                             <div>Mana {member.info.mn}/{member.info.mmn}</div>
                         </div>
                         <div class="meter">
-                            <span class="moves" style={`width: ${Math.min(member.info.mv / member.info.mmv * 100, 100)}%`}></span>
+                            <span class="movesBar" style={`width: ${Math.min(member.info.mv / member.info.mmv * 100, 100)}%`}></span>
                             <div>Moves {member.info.mv}/{member.info.mmv}</div>
                         </div>
                     </div>

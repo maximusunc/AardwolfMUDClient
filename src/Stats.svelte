@@ -16,43 +16,14 @@
   }
   .meter {
     height: 14%;
-    position: relative;
-    background: #616E7C;
-    -moz-border-radius: 25px;
-    -webkit-border-radius: 25px;
-    border-radius: 25px;
-    padding: 5px;
-    box-shadow: inset 0 -1px 1px rgba(255, 255, 255, 0.3);
   }
   .meter:last-child {
     margin-bottom: 15px;
-  }
-  .meter > span {
-    display: flex;
-    align-items: center;
-    height: 100%;
-    border-top-right-radius: 8px;
-    border-bottom-right-radius: 8px;
-    border-top-left-radius: 20px;
-    border-bottom-left-radius: 20px;
-    box-shadow: 
-      inset 0 2px 9px  rgba(255,255,255,0.3),
-      inset 0 -2px 6px rgba(0,0,0,0.4);
-    position: relative;
-    overflow: hidden;
   }
   .meter > div {
     margin-left: 10px;
     position: absolute;
     top: 9px;
-  }
-  span.enemy {
-    background-color: #efd300;
-    background-image: linear-gradient(to bottom, #efd300, #ceb600);
-  }
-  span.health {
-    background-color: #f0a3a3;
-    background-image: linear-gradient(to bottom, #f0a3a3, #f42323);
   }
   #userActions > button {
     margin-right: 5px;
@@ -68,13 +39,25 @@
   </div>
   <div class="meter">
     {#if $gmcp.vitals.hp}
-      <span class="health" style={`width: ${Math.min($gmcp.vitals.hp / $gmcp.vitals.mhp * 100, 100)}%`}></span>
+      <span class="healthBar" style={`width: ${Math.min($gmcp.vitals.hp / $gmcp.vitals.mhp * 100, 100)}%`}></span>
       <div>Health {$gmcp.vitals.hp}/{$gmcp.vitals.mhp}</div>
     {/if}
   </div>
   <div class="meter">
+    {#if $gmcp.vitals.mmn}
+      <span class="manaBar" style={`width: ${Math.min($gmcp.vitals.mn / $gmcp.vitals.mmn * 100, 100)}%`}></span>
+      <div>Mana {$gmcp.vitals.mn}/{$gmcp.vitals.mmn}</div>
+    {/if}
+  </div>
+  <div class="meter">
+    {#if $gmcp.vitals.mmv}
+      <span class="movesBar" style={`width: ${Math.min($gmcp.vitals.mv / $gmcp.vitals.mmv * 100, 100)}%`}></span>
+      <div>Moves {$gmcp.vitals.mv}/{$gmcp.vitals.mmv}</div>
+    {/if}
+  </div>
+  <div class="meter">
     {#if $gmcp.enemy.name}
-      <span class="enemy" style={`width: ${$gmcp.enemy.health}%`}></span>
+      <span class="enemyBar" style={`width: ${$gmcp.enemy.health}%`}></span>
       <div>{$gmcp.enemy.name} {`${$gmcp.enemy.health}%`}</div>
     {/if}
   </div>
