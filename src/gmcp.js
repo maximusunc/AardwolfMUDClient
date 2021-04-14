@@ -23,6 +23,11 @@ function parseStatus(self, gmcpData) {
   self.stats.align = status.align;
 }
 
+function parseStats(self, gmcpData) {
+  const stats = JSON.parse(gmcpData);
+  self.stats = { ...self.stats, ...stats };
+}
+
 function parseVitals(self, gmcpData) {
   const vitals = JSON.parse(gmcpData);
   self.vitals = { ...self.vitals, hp: vitals.hp, mn: vitals.mana, mv: vitals.moves };
@@ -31,6 +36,15 @@ function parseVitals(self, gmcpData) {
 function parseMaxstats(self, gmcpData) {
   const maxstats = JSON.parse(gmcpData);
   self.vitals = { ...self.vitals, mhp: maxstats.maxhp, mmn: maxstats.maxmana, mmv: maxstats.maxmoves };
+  self.stats = {
+    ...self.stats,
+    mstr: maxstats.maxstr,
+    mint: maxstats.maxint,
+    mwis: maxstats.maxwis,
+    mdex: maxstats.maxdex,
+    mcon: maxstats.maxcon,
+    mluck: maxstats.maxluck,
+  };
 }
 
 export const gmcp = {
@@ -53,7 +67,7 @@ export const gmcp = {
         break;
       case 'char.stats':
         // { "str": 130, "int": 95, "wis": 95, "dex": 122, "con": 123, "luck": 131, "hr": 121, "dr": 96, "saves": 0 }
-        // console.log('char stats');
+        parseStats(self, gmcpData);
         break;
       case 'char.maxstats':
         // { "maxhp": 3880, "maxmana": 2653, "maxmoves": 4020, "maxstr": 111, "maxint": 88, "maxwis": 90, "maxdex": 108, "maxcon": 111, "maxluck": 127 }
@@ -61,7 +75,7 @@ export const gmcp = {
         break;
       case 'char.worth':
         // { "gold": 749755, "bank": 6400010, "qp": 1062, "tp": 4, "trains": 72, "pracs": 569, "qpearned": 1062 }
-        // console.log('char worth');
+        parseStats(self, gmcpData);
         break;
       case 'char.base':
         // { "name": "Maximusunc", "class": "Thief", "subclass": "Ninja", "race": "Wolfen", "clan": "", "pretitle": "", "perlevel": 1000, "tier": 0, "remorts": 1, "redos": 0, "classes" : "2", "level": 136, "pups": 0, "totpups": 0 }
