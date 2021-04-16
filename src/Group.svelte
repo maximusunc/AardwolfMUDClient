@@ -3,6 +3,7 @@
     import { settings } from './settings';
     import { output } from './output.js';
     const { ipcRenderer } = require('electron');
+    import ActionButton from './components/ActionButton.svelte';
 </script>
 
 <style>
@@ -76,7 +77,11 @@
             </div>
             <div class="memberActions">
                 {#each $settings.groupActions as action, i}
-                    <button on:click={() => ipcRenderer.send('msg', `${action.command} ${$gmcp.name}`)}>{action.label}</button>
+                    <ActionButton
+                        onClick={() => ipcRenderer.send('msg', `${action.command} ${$gmcp.name}`)}
+                    >
+                        {action.label}
+                    </ActionButton>
                 {/each}
             </div>
         </div>
@@ -109,7 +114,11 @@
                     </div>
                     <div class="memberActions">
                         {#each $settings.groupActions as action, i}
-                            <button on:click={() => ipcRenderer.send('msg', `${action.command} ${member.name}`)}>{action.label}</button>
+                            <ActionButton
+                                onClick={() => ipcRenderer.send('msg', `${action.command} ${member.name}`)}
+                            >
+                                {action.label}
+                            </ActionButton>
                         {/each}
                     </div>
                 </div>

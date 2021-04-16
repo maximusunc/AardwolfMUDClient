@@ -1,6 +1,7 @@
 <script>
     import { output } from './output';
     const { ipcRenderer } = require('electron');
+    import ActionButton from './components/ActionButton.svelte';
     const wearLocs = {
         0:  "light",    // [ Used as light       ]:            light
         1:  "head",     // [ Worn on head        ]:             head
@@ -47,9 +48,6 @@
     .contentItem {
         padding: 2px;
     }
-    .contentItem > button {
-        margin-left: 5px;
-    }
 </style>
 
 
@@ -59,8 +57,16 @@
             {@html wearLoc}:
             {#if $output.items.has(objectid)}
                 {@html $output.items.get(objectid).display()}
-                <button on:click={() => {ipcRenderer.send('msg', `id worn ${objectid}`);}}>details</button>
-                <button on:click={() => {ipcRenderer.send('msg', `remove ${objectid}`);}}>remove</button>
+                <ActionButton
+                    onClick={() => {ipcRenderer.send('msg', `id worn ${objectid}`);}}
+                >
+                    details
+                </ActionButton>
+                <ActionButton
+                    onClick={() => {ipcRenderer.send('msg', `remove ${objectid}`);}}
+                >
+                    remove
+                </ActionButton>
             {:else}
                 empty
             {/if}

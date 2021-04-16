@@ -2,14 +2,12 @@
     export let id = "inventory";
     import { output } from './output';
     const { ipcRenderer } = require('electron');
+    import ActionButton from './components/ActionButton.svelte';
 </script>
 
 <style>
     .contentItem {
         padding: 2px;
-    }
-    .contentItem > button {
-        margin-left: 5px;
     }
 </style>
 
@@ -18,19 +16,27 @@
         <div class="contentItem">
             {@html $output.items.get(objectid).display()}
             {#if id === "inventory"}
-                <button on:click={() => {ipcRenderer.send('msg', `id ${objectid}`);}}>details</button>
+                <ActionButton
+                    onClick={() => {ipcRenderer.send('msg', `id ${objectid}`);}}
+                >
+                    details
+                </ActionButton>
                 {#each $output.items.get(objectid).invactions() as action}
-                    <button
-                        on:click={() => {
+                    <ActionButton
+                        onClick={() => {
                             let command = action.command(objectid);
                             ipcRenderer.send('msg', command);
                         }}
                     >
-                        {@html action.label}
-                    </button>
+                        {action.label}
+                    </ActionButton>
                 {/each}
             {:else}
-                <button on:click={() => {ipcRenderer.send('msg', `take ${objectid} ${id}`);}}>take</button>
+                <ActionButton
+                    onClick={() => {ipcRenderer.send('msg', `take ${objectid} ${id}`);}}
+                >
+                    take
+                </ActionButton>
             {/if}
         </div>
     {/each}
