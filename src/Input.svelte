@@ -9,10 +9,6 @@
     let historyIndex = 0;
 
     function handleKeyPress(event) {
-        // don't allow any default keypress actions
-        // this is mainly to disable scrolling down
-        // when pressing the space bar
-        event.preventDefault();
         if ($open) return;
         if (event.code === 'Enter') {
             event.preventDefault();
@@ -56,6 +52,10 @@
                 });
             }
         } else if (document.activeElement !== input) {
+            // don't allow any default keypress actions
+            // this is mainly to disable scrolling down
+            // when pressing the space bar
+            event.preventDefault();
             command += event.key;
         }
     }
