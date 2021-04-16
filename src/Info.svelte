@@ -34,7 +34,7 @@
         <p>Constitution: [{$gmcp.stats.con}/{$gmcp.stats.mcon}]</p>
         <p>Luck: [{$gmcp.stats.luck}/{$gmcp.stats.mluck}]</p>
     {/if}
-    {#if $gmcp.stats.trains}
+    {#if $gmcp.stats.trains || $gmcp.stats.gold || $gmcp.stats.bank}
         <p>Trains: {$gmcp.stats.trains}</p>
         <p>Pracs: {$gmcp.stats.pracs}</p>
         <p>Gold: {$gmcp.stats.gold.toLocaleString()}</p>
