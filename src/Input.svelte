@@ -59,6 +59,8 @@
     function handleKeyDown(event) {
         if ($open) return;
         if (event.code === 'ArrowUp') {
+            // this prevents the cursor from moving to the start of input
+            event.preventDefault();
             if (historyIndex > 0) {
                 historyIndex -= 1;
             }
