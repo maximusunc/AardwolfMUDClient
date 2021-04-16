@@ -2,6 +2,7 @@
   import { gmcp } from './gmcp';
   import { settings } from './settings';
   const { ipcRenderer } = require('electron');
+  import ActionButton from './components/ActionButton.svelte';
 </script>
 
 <style>
@@ -25,16 +26,17 @@
     position: absolute;
     top: 9px;
   }
-  #userActions > button {
-    margin-right: 5px;
-  }
 </style>
 
 <div id="statsContainer">
   <div id="userActions">
     <p>User actions</p>
     {#each $settings.userActions as action, i}
-      <button on:click={() => ipcRenderer.send('msg', action.command)}>{action.label}</button>
+      <ActionButton
+        onClick={() => ipcRenderer.send('msg', action.command)}
+      >
+        {action.label}
+      </ActionButton>
     {/each}
   </div>
   <div class="meter">

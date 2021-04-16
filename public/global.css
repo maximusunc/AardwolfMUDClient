@@ -7,7 +7,6 @@ body {
     margin: 0;
 }
 button {
-    outline: none;
     cursor: pointer;
     background: #CBD2D9;
     border-radius: 5px;
