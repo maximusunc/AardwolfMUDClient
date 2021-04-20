@@ -103,11 +103,18 @@ function createWindow() {
       const tsock = new TelnetSocket(socket);
 
       ipcMain.on('msg', (e, msg) => {
+        if (msg === "MCCP") {
+          tsock.writeDo(MCCP);
+          console.log("tsock.writeDo(MCCP)");
+        }
         tsock.write(msg + '\n');
       });
 
       // listen to all incoming messages
       tsock.on('data', (chunk) => {
+        console.log(`data`);
+        console.log(`${chunk}`);
+        console.log(`enddata`);
         if (usingMCCP) {
           // console.log(chunk.toString('utf8'));
           // console.log(chunk.toJSON());
@@ -119,6 +126,7 @@ function createWindow() {
           //     console.log('zlib result', cb.toString('utf8'));
           //   }
           // });
+          console.log("unzipStream.write(chunk)");
           unzipStream.write(chunk);
         } else {
           const msg = chunk.toString('utf8');
@@ -130,12 +138,16 @@ function createWindow() {
         }
       });
       unzipStream.on('data', (data) => {
-        const msg = data.toStrain('utf8');
+        const msg = data.toString('utf8');
+        console.log("decoded");
+        console.log(msg);
+        console.log("end decoded");
         const message = msg.replaceAll('\r', '');
         mainWindow.webContents.send('message', message);
         // console.log('unzip result', data.toString('utf8'));
       });
       tsock.on('will', (opt) => {
+        console.log(`will ${opt}`);
         if (opt === GMCP) {
           // enable that junk
           tsock.writeDo(GMCP);
@@ -143,17 +155,20 @@ function createWindow() {
           tsock.writeSub(GMCP, Buffer.from('Core.Supports.Set [ "Char 1", "Comm 1", "Room 1", "Group 1" ]', 'utf-8'));
         }
         if (opt === MCCP) {
-          tsock.writeDo(MCCP);
+          // tsock.writeDo(MCCP);
+          // console.log("writeDo(MCCP)");
         }
       });
 
       tsock.on('sub', (opt, buf) => {
+        console.log(`sub ${opt}, ${buf}`);
         // receive all gmcp subnegotiations and send them to the UI
         if (opt === GMCP) {
           const msg = buf.toString('utf8');
           mainWindow.webContents.send('gmcp', msg);
         }
         if (opt === MCCP) {
+          console.log("usingMCCP = true");
           usingMCCP = true;
           const msg = buf.toString('utf8');
         }
@@ -161,6 +176,7 @@ function createWindow() {
 
       // exit the process when the telnet connection is closed
       tsock.on('close', () => {
+        console.log(`close`);
         // writeStream.end();
         mainWindow.close();
       });
