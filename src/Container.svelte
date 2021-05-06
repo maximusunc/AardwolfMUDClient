@@ -4,21 +4,21 @@
     const { ipcRenderer } = require('electron');
     import ActionButton from './components/ActionButton.svelte';
     let stackedInventory = {};
-    let drinkContainers = {};
+    let nonstackedContainers = {};
 
     $: {
         stackedInventory = {};
-        drinkContainers = {};
+        nonstackedContainers = {};
         [...$output.containers[id]].reverse().forEach((objectId) => {
             const item = $output.items.get(objectId);
             let display = item.display();
-            if (item.type === '12') {
-                // is a drink container, don't stack
-                if (display in drinkContainers) {
-                    drinkContainers[display].push(objectId);
-                    display = `${drinkContainers[display].length}. ${display}`;
+            if (item.type === '12' || item.type === '11') {
+                // is a container, don't stack
+                if (display in nonstackedContainers) {
+                    nonstackedContainers[display].push(objectId);
+                    display = `${nonstackedContainers[display].length}. ${display}`;
                 } else {
-                    drinkContainers[display] = [objectId];
+                    nonstackedContainers[display] = [objectId];
                 }
             }
             if (display in stackedInventory) {
