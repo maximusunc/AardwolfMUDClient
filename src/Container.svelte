@@ -3,28 +3,60 @@
     import { output } from './output';
     const { ipcRenderer } = require('electron');
     import ActionButton from './components/ActionButton.svelte';
+    let stackedInventory = {};
+    let drinkContainers = {};
+
+    $: {
+        stackedInventory = {};
+        drinkContainers = {};
+        [...$output.containers[id]].reverse().forEach((objectId) => {
+            const item = $output.items.get(objectId);
+            let display = item.display();
+            if (item.type === '12') {
+                // is a drink container, don't stack
+                if (display in drinkContainers) {
+                    drinkContainers[display].push(objectId);
+                    display = `${drinkContainers[display].length}. ${display}`;
+                } else {
+                    drinkContainers[display] = [objectId];
+                }
+            }
+            if (display in stackedInventory) {
+                stackedInventory[display].push(objectId);
+            } else {
+                stackedInventory[display] = [objectId];
+            }
+        });
+    }
 </script>
 
 <style>
     .contentItem {
         padding: 2px;
     }
+    span {
+        display: inline-block;
+        width: 40px;
+        text-align: center;
+        color: limegreen;
+    }
 </style>
 
 <div>
-    {#each [...$output.containers[id]].reverse() as objectid}
+    {#each Object.entries(stackedInventory) as [display, objectIds]}
         <div class="contentItem">
-            {@html $output.items.get(objectid).display()}
+            <span>{objectIds.length > 1 ? `(${objectIds.length})` : ''}</span>
+            {@html display}
             {#if id === "inventory"}
                 <ActionButton
-                    onClick={() => {ipcRenderer.send('msg', `id ${objectid}`);}}
+                    onClick={() => {ipcRenderer.send('msg', `id ${objectIds[0]}`);}}
                 >
                     details
                 </ActionButton>
-                {#each $output.items.get(objectid).invactions() as action}
+                {#each $output.items.get(objectIds[0]).invactions() as action}
                     <ActionButton
                         onClick={() => {
-                            let command = action.command(objectid);
+                            let command = action.command(objectIds[0]);
                             ipcRenderer.send('msg', command);
                         }}
                     >
@@ -33,7 +65,7 @@
                 {/each}
             {:else}
                 <ActionButton
-                    onClick={() => {ipcRenderer.send('msg', `take ${objectid} ${id}`);}}
+                    onClick={() => {ipcRenderer.send('msg', `take ${objectIds[0]} ${id}`);}}
                 >
                     take
                 </ActionButton>
