@@ -1,0 +1,80 @@
+{
+  "_args": [
+    [
+      "telnet-stream@1.0.4",
+      "/Users/patrick/Documents/personal/projects/AardwolfMUDClient"
+    ]
+  ],
+  "_from": "telnet-stream@1.0.4",
+  "_id": "telnet-stream@1.0.4",
+  "_inBundle": false,
+  "_integrity": "sha512-2nYMIPngNDfUFe4H3Qb/DM6CY08YoC34mBQhT+iv+fWlJrjOJUDHRTpmVo876EzKJlpxLI32yKVmjHHdX6TtpA==",
+  "_location": "/telnet-stream",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "telnet-stream@1.0.4",
+    "name": "telnet-stream",
+    "escapedName": "telnet-stream",
+    "rawSpec": "1.0.4",
+    "saveSpec": null,
+    "fetchSpec": "1.0.4"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/telnet-stream/-/telnet-stream-1.0.4.tgz",
+  "_spec": "1.0.4",
+  "_where": "/Users/patrick/Documents/personal/projects/AardwolfMUDClient",
+  "author": {
+    "name": "Patrick Meade",
+    "email": "veloxi@ticon.net"
+  },
+  "bugs": {
+    "url": "https://github.com/blinkdog/telnet-stream/issues"
+  },
+  "description": "TELNET protocol support library",
+  "devDependencies": {
+    "coffeescript": "2.0.2",
+    "istanbul": "0.4.5",
+    "mocha": "4.0.1",
+    "should": "13.1.3"
+  },
+  "files": [
+    "CHANGELOG.md",
+    "index.js",
+    "lib",
+    "LICENSE",
+    "package.json",
+    "README.md"
+  ],
+  "homepage": "https://github.com/blinkdog/telnet-stream",
+  "keywords": [
+    "do",
+    "dont",
+    "event",
+    "MUD",
+    "MOO",
+    "MUSH",
+    "MUX",
+    "subnegotiation",
+    "protocol",
+    "rfc854",
+    "rfc855",
+    "socket",
+    "stream",
+    "TELNET",
+    "Transform",
+    "will",
+    "wont"
+  ],
+  "license": "AGPL-3.0",
+  "main": "telnet-stream",
+  "name": "telnet-stream",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/blinkdog/telnet-stream.git"
+  },
+  "version": "1.0.4"
+}
