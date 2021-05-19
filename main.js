@@ -3,7 +3,7 @@ const net = require('net');
 const fs = require('fs');
 const { userDataDir } = require('appdirs');
 // telnet-stream basically strips out all the telnet config messages.
-const { TelnetSocket } = require('telnet-stream');
+const { TelnetSocket } = require('./telnet-stream');
 // Module to control application life.
 const { app, BrowserWindow, ipcMain } = electron;
 
@@ -114,12 +114,12 @@ function createWindow() {
         console.log(`${chunk}`);
         console.log(`enddata`);
         
-          const msg = chunk.toString('utf8');
-          // message always has extra returns
-          const message = msg.replaceAll('\r', '');
-          // writeStream.write(String.raw`${message}`);
-          // send the message from telnet to UI
-          mainWindow.webContents.send('message', message);
+        const msg = chunk.toString('utf8');
+        // message always has extra returns
+        const message = msg.replaceAll('\r', '');
+        // writeStream.write(String.raw`${message}`);
+        // send the message from telnet to UI
+        mainWindow.webContents.send('message', message);
       });
       tsock.on('will', (opt) => {
         console.log(`will ${opt}`);

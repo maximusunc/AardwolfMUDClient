@@ -8,7 +8,7 @@
 const net = require('net');
 const fs = require('fs');
 // telnet-stream basically strips out all the telnet config messages.
-const { TelnetSocket } = require('telnet-stream');
+const { TelnetSocket } = require('./telnet-stream');
 
 const {
   screen, input, output,

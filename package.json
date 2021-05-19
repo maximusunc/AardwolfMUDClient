@@ -18,8 +18,7 @@
     "ansi_up": "^5.0.0",
     "appdirs": "^1.1.0",
     "blessed": "^0.1.81",
-    "neo-blessed": "^0.2.0",
-    "telnet-stream": "^1.0.4"
+    "neo-blessed": "^0.2.0"
   },
   "devDependencies": {
     "electron": "^11.2.1",
