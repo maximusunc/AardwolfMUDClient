@@ -1,7 +1,6 @@
 const electron = require('electron');
 const net = require('net');
 const fs = require('fs');
-const { unzip, createUnzip } = require('zlib');
 const { userDataDir } = require('appdirs');
 // telnet-stream basically strips out all the telnet config messages.
 const { TelnetSocket } = require('telnet-stream');
@@ -32,7 +31,6 @@ function createLogFile() {
 }
 
 let writeStream;
-const unzipStream = createUnzip();
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -115,36 +113,13 @@ function createWindow() {
         console.log(`data`);
         console.log(`${chunk}`);
         console.log(`enddata`);
-        if (usingMCCP) {
-          // console.log(chunk.toString('utf8'));
-          // console.log(chunk.toJSON());
-          // unzip(chunk, (err, cb) => {
-          //   if (err) {
-          //     console.log('error inflating', err);
-          //   } else {
-          //     console.log('zlib result', cb);
-          //     console.log('zlib result', cb.toString('utf8'));
-          //   }
-          // });
-          console.log("unzipStream.write(chunk)");
-          unzipStream.write(chunk);
-        } else {
+        
           const msg = chunk.toString('utf8');
           // message always has extra returns
           const message = msg.replaceAll('\r', '');
           // writeStream.write(String.raw`${message}`);
           // send the message from telnet to UI
           mainWindow.webContents.send('message', message);
-        }
-      });
-      unzipStream.on('data', (data) => {
-        const msg = data.toString('utf8');
-        console.log("decoded");
-        console.log(msg);
-        console.log("end decoded");
-        const message = msg.replaceAll('\r', '');
-        mainWindow.webContents.send('message', message);
-        // console.log('unzip result', data.toString('utf8'));
       });
       tsock.on('will', (opt) => {
         console.log(`will ${opt}`);
@@ -155,8 +130,7 @@ function createWindow() {
           tsock.writeSub(GMCP, Buffer.from('Core.Supports.Set [ "Char 1", "Comm 1", "Room 1", "Group 1" ]', 'utf-8'));
         }
         if (opt === MCCP) {
-          // tsock.writeDo(MCCP);
-          // console.log("writeDo(MCCP)");
+          tsock.writeDo(MCCP);
         }
       });
 
@@ -166,11 +140,6 @@ function createWindow() {
         if (opt === GMCP) {
           const msg = buf.toString('utf8');
           mainWindow.webContents.send('gmcp', msg);
-        }
-        if (opt === MCCP) {
-          console.log("usingMCCP = true");
-          usingMCCP = true;
-          const msg = buf.toString('utf8');
         }
       });
 
