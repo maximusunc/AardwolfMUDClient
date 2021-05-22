@@ -93,7 +93,7 @@ function createWindow() {
 
     ipcMain.on('ui-up', () => {
       mainWindow.webContents.send('config', config);
-      // writeStream = createLogFile();
+      writeStream = createLogFile();
       // create the telnet connection
       const socket = net.createConnection(23, '23.111.136.202');
 
@@ -101,9 +101,6 @@ function createWindow() {
       const tsock = new TelnetSocket(socket);
 
       ipcMain.on('msg', (e, msg) => {
-        if (msg === "MCCP") {
-          tsock.writeDo(MCCP);
-        }
         tsock.write(msg + '\n');
       });
 
@@ -112,12 +109,11 @@ function createWindow() {
         const msg = chunk.toString('utf8');
         // message always has extra returns
         const message = msg.replaceAll('\r', '');
-        // writeStream.write(String.raw`${message}`);
+        writeStream.write(String.raw`${message}`);
         // send the message from telnet to UI
         mainWindow.webContents.send('message', message);
       });
       tsock.on('will', (opt) => {
-        console.log(`will ${opt}`);
         if (opt === GMCP) {
           // enable that junk
           tsock.writeDo(GMCP);
@@ -130,7 +126,6 @@ function createWindow() {
       });
 
       tsock.on('sub', (opt, buf) => {
-        console.log(`sub ${opt}, ${buf}`);
         // receive all gmcp subnegotiations and send them to the UI
         if (opt === GMCP) {
           const msg = buf.toString('utf8');
@@ -140,8 +135,7 @@ function createWindow() {
 
       // exit the process when the telnet connection is closed
       tsock.on('close', () => {
-        console.log(`close`);
-        // writeStream.end();
+        writeStream.end();
         mainWindow.close();
       });
     });
