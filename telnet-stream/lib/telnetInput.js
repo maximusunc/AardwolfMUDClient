@@ -95,7 +95,6 @@ const { createUnzip } = require("zlib");
     _handle(chunkData) {
       switch (this.state) {
         case TELNET_DATA:
-          // console.log(`TELNET_DATA: ${chunkData}`);
           switch (chunkData) {
             case TELNET_IAC:
               return this.state = TELNET_COMMAND;
@@ -105,7 +104,6 @@ const { createUnzip } = require("zlib");
           }
           break;
         case TELNET_COMMAND:
-          // console.log(`TELNET_COMMAND: ${chunkData}`);
           switch (chunkData) {
             case TELNET_IAC:
               this.state = TELNET_DATA;
@@ -124,7 +122,6 @@ const { createUnzip } = require("zlib");
           }
           break;
         case TELNET_OPTION:
-          // console.log(`TELNET_OPTION: ${chunkData}`);
           switch (this.command) {
             case TELNET_DO:
               this.state = TELNET_DATA;
@@ -146,7 +143,6 @@ const { createUnzip } = require("zlib");
           }
           break;
         case TELNET_SUBNEG:
-          // console.log(`TELNET_SUBNEG: ${chunkData}`);
           switch (chunkData) {
             case TELNET_IAC:
               return this.state = TELNET_SUBNEG_COMMAND;
@@ -155,7 +151,6 @@ const { createUnzip } = require("zlib");
           }
           break;
         case TELNET_SUBNEG_COMMAND:
-          // console.log(`TELNET_SUBNEG_COMMAND: ${chunkData}`);
           switch (chunkData) {
             case TELNET_IAC:
               this.state = TELNET_SUBNEG;
@@ -163,7 +158,6 @@ const { createUnzip } = require("zlib");
             case TELNET_SUB_END:
               this.state = TELNET_DATA;
               if (this.option == MCCP) {
-                console.log("decompressing now");
                 this.decompressing = true;
               }
               return this.emit("sub", this.option, this.subBuf.slice(0, this.subBufIndex));
