@@ -103,17 +103,12 @@ function createWindow() {
       ipcMain.on('msg', (e, msg) => {
         if (msg === "MCCP") {
           tsock.writeDo(MCCP);
-          console.log("tsock.writeDo(MCCP)");
         }
         tsock.write(msg + '\n');
       });
 
       // listen to all incoming messages
       tsock.on('data', (chunk) => {
-        console.log(`data`);
-        console.log(`${chunk}`);
-        console.log(`enddata`);
-        
         const msg = chunk.toString('utf8');
         // message always has extra returns
         const message = msg.replaceAll('\r', '');
