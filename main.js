@@ -43,7 +43,6 @@ if (process.argv[2] === '-d') {
 
 const GMCP = 201;
 const MCCP = 86;
-let usingMCCP = false;
 
 function createWindow() {
   let config = { user: {}, groupActions: {} };
