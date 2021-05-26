@@ -9,7 +9,7 @@
     $: {
         stackedInventory = {};
         nonstackedContainers = {};
-        [...$output.containers[id]].reverse().forEach((objectId) => {
+        $output.containers[id].forEach((objectId) => {
             const item = $output.items.get(objectId);
             let display = item.display();
             if (item.type === '12' || item.type === '11') {
@@ -43,7 +43,7 @@
 </style>
 
 <div>
-    {#each Object.entries(stackedInventory) as [display, objectIds]}
+    {#each Object.entries(stackedInventory).reverse() as [display, objectIds]}
         <div class="contentItem">
             <span>{objectIds.length > 1 ? `(${objectIds.length})` : ''}</span>
             {@html display}
