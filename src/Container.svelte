@@ -49,14 +49,14 @@
             {@html display}
             {#if id === "inventory"}
                 <ActionButton
-                    onClick={() => {ipcRenderer.send('msg', `id ${objectIds[0]}`);}}
+                    onClick={() => {ipcRenderer.send('msg', `id ${objectIds[objectIds.length - 1]}`);}}
                 >
                     details
                 </ActionButton>
-                {#each $output.items.get(objectIds[0]).invactions() as action}
+                {#each $output.items.get(objectIds[objectIds.length - 1]).invactions() as action}
                     <ActionButton
                         onClick={() => {
-                            let command = action.command(objectIds[0]);
+                            let command = action.command(objectIds[objectIds.length - 1]);
                             ipcRenderer.send('msg', command);
                         }}
                     >
@@ -65,7 +65,7 @@
                 {/each}
             {:else}
                 <ActionButton
-                    onClick={() => {ipcRenderer.send('msg', `take ${objectIds[0]} ${id}`);}}
+                    onClick={() => {ipcRenderer.send('msg', `take ${objectIds[objectIds.length - 1]} ${id}`);}}
                 >
                     take
                 </ActionButton>
