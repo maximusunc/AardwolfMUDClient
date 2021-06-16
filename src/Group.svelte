@@ -63,7 +63,7 @@
             </div>
             <div class="memberStats">
                 <div class="meter">
-                    <span class="healthBar" style={`width: ${Math.min(gmcp.vitals.hp / gmcp.vitals.mhp * 100, 100)}%`}></span>
+                    <span class="healthBar" style={`width: ${Math.min($gmcp.vitals.hp / $gmcp.vitals.mhp * 100, 100)}%`}></span>
                     <div>Health {$gmcp.vitals.hp}/{$gmcp.vitals.mhp}</div>
                 </div>
                 <div class="meter">
