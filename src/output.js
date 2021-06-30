@@ -115,6 +115,21 @@ captor.handlers["equipment"] = {
 }
 
 /**
+ * Extract and handle any tells.
+ * @param {*} self - the svelte state object
+ * @param {string} msg - a telnet message
+ */
+function extractTell(self, msg) {
+  let tell = msg.match(/(?<=\[0;36m.* tells you '!).*(?='\[0;37m)/gm);
+  console.log(`tell: ${tell}`);
+  if (!tell) {
+    return msg;
+  }
+  ipcRenderer.send("msg", tell);
+  return msg;
+}
+
+/**
  * Parse and handle a telnet message.
  * @param {*} self - the svelte state object
  * @param {string} msg - a telnet message
@@ -123,6 +138,7 @@ function parseMessage(self, msg) {
   msg = captor.extractBetweenTags(self, msg);
   msg = extractInvmon(self, msg);
   msg = extractInvitem(self, msg);
+  msg = extractTell(self, msg);
 
   // "[*Daily Blessing*] [678/678hp 666/666mn 993/993mv 0qt 746tnl] >"
   // const playerStats = RegExp(/(?<prefix>\[[A-Za-z: ]*)(?<hp>[0-9]+)\/(?<totalhp>[0-9]+)hp (?<mn>[0-9]+)\/(?<totalmn>[0-9]+)mn (?<mv>[0-9]+)\/(?<totalmv>[0-9]+)mv((?<qt> [0-9]+)qt)? (?<tnl>[0-9]+)tnl.+?>/g);
